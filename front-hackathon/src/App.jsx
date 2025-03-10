@@ -1,30 +1,17 @@
-import './app.css'
-import Home from './pages/Home'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 
-import ProtectedRoutes from './components/ProtectedRoutes'
 
-function App() {
-
+const App = () => {
   return (
-    <>
     <Router>
       <Routes>
-        <Route path="/" element={
-          <ProtectedRoutes>
-            <Home />
-          </ProtectedRoutes>
-        } />
-        <Route path="/home" element={
-          <ProtectedRoutes>
-            <Home />
-          </ProtectedRoutes>
-        } />
+        <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
+  );
+};
 
-    </>
-  )
-}
-
-export default App
+export default App;
