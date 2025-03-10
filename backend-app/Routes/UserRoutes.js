@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
  
  
 router.post("/register", async (req, res) => {
+  console.log(req.body)
     try {
         const { username, email, password } = req.body
         const salt = await bcrypt.genSalt(10)
@@ -16,7 +17,7 @@ router.post("/register", async (req, res) => {
             password: hashedPassword
         })
         await user.save()
-        res.status(201).json({ message: "Utilisateur créé" })
+        res.status(201).json({ status: true, user: {username: user.username, email: user.email} })
     } catch (error) {
         res.status(500).json({ message: "Erreur serveur" })
     }
@@ -24,9 +25,9 @@ router.post("/register", async (req, res) => {
  
  
 router.post("/login", async (req, res) => {
+  const { username, password } = req.body
     try {
-        const { email, password } = req.body
-        const user = await User.findOne({ email })
+        const user = await User.findOne({ username })
         if (!user) {
             return res.status(404).json({ message: "Utilisateur non trouvé" })
         }
@@ -42,7 +43,7 @@ router.post("/login", async (req, res) => {
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: "7d",
         })
-        res.json({ ...payload, token })
+        res.json({ user: payload, token })
     } catch (error) {
         res.status(500).json({ message: "Erreur serveur" })
     }

@@ -10,4 +10,4 @@ const TweetSchema = new mongoose.Schema({
     date: { type: Date, default: Date.now },
 }, { timestamps: true });
 
-module.exports = mongoose.model("Tweet", TweetSchema);
+module.exports = mongoose.model("tweets", TweetSchema);

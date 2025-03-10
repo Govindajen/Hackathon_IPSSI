@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an instance of axios
 const myAxios = axios.create({
-    baseURL: 'http://localhost:3001/api', // Replace with your API base URL
+    baseURL: 'http://localhost:3000', // Replace with your API base URL
     timeout: 1000,
 });
 
@@ -27,13 +27,11 @@ myAxios.interceptors.request.use(
 myAxios.interceptors.response.use(
     response => {
         // Do something with response data
-        if (response.data && response.data.token) {
-            localStorage.setItem('token', response.data.token);
-        }
         return response;
     },
     error => {
         // Do something with response error
+        console.log(error)
         if (error.response.status === 401) {
             // Handle unauthorized error
             console.log('Unauthorized, logging out...');

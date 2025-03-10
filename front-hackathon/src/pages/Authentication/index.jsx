@@ -1,15 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { login, register } from "../../redux/slices/authSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function Authentication () {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const [page, setPage] = useState(true);
+
+    const user = useSelector(state => state.auth)
+    
+    useEffect(() => {
+
+        if(user.isAuthenticated) {
+            navigate('/home')
+        } else if (!user.Authentication) {
+            navigate('/login')
+        }
+    }, [user])
 
     function handleLogin ({username, password}) {
 
