@@ -6,7 +6,7 @@ const login = createAsyncThunk(
     "auth/login", 
         async (values) => {
             try {
-                const response = await myAxios.post('/auth/login', values)
+                const response = await myAxios.post('/users/login', values)
                 return response.data;
             } catch (error) {
                 error && console.error(error)
@@ -19,7 +19,7 @@ const register = createAsyncThunk(
     "auth/register", 
         async (values) => {
             try {
-                const response = await myAxios.post('/auth/register', values)
+                const response = await myAxios.post('/users/register', values)
                 return response.data.data
             } catch (error) {
                 error && console.error(error)
