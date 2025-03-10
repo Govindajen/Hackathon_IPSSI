@@ -3,7 +3,7 @@ export default function ProtectedRoutes ({ children }) {
 
   return (
     <>
-        {user ? children : <Redirect to="/login" />}
+        {!user ? children : <Redirect to="/login" />}
     </>
   )
 }

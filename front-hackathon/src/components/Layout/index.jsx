@@ -1,9 +1,9 @@
 export default function Layout ({ children }) {
   return (
     <>
-      <Header />
+      <div>
         <main>{children}</main>
-      <Footer />
+      </div>
     </>
   )
 }

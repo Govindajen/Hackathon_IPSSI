@@ -1,24 +1,26 @@
-import { useState } from 'react'
-import './App.css'
+import './app.css'
 import Home from './pages/Home'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-import Layout from './components/Layout'
 import ProtectedRoutes from './components/ProtectedRoutes'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
     <Router>
-        <Switch>
-            <Route path="/" exact component={
-              <ProtectedRoutes>
-                <Home />
-              </ProtectedRoutes>
-              } />
-        </Switch>
+      <Routes>
+        <Route path="/" element={
+          <ProtectedRoutes>
+            <Home />
+          </ProtectedRoutes>
+        } />
+        <Route path="/home" element={
+          <ProtectedRoutes>
+            <Home />
+          </ProtectedRoutes>
+        } />
+      </Routes>
     </Router>
 
     </>
