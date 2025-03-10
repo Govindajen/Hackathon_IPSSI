@@ -16,8 +16,8 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.use(cors());
 app.use(express.json());
 
-app.use("/tweets", tweetsRouter);
-app.use("/users", usersRouter);
+app.use("/tweets",  tweetsRouter);
+app.use("/users", verifyToken, authMiddleware, usersRouter);
 app.use("/notifs", notifsRouter);
 
 app.listen(process.env.PORT, () =>
