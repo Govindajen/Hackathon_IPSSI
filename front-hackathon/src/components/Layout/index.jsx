@@ -1,9 +1,12 @@
-export default function Layout ({ children }) {
+import Navbar from "../Navbar";
+
+const Layout = ({ children }) => {
   return (
-    <>
-      <div>
-        <main>{children}</main>
-      </div>
-    </>
-  )
-}
+    <div>
+      <Navbar />
+      <main>{children}</main>
+    </div>
+  );
+};
+
+export default Layout;
