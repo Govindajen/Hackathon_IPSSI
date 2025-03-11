@@ -15,10 +15,13 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Récupérer tous les tweets
+
+
+
+// Récupérer tous les tweets 
 router.get("/", async (req, res) => {
   try {
-    const tweets = await Tweet.find().populate("user", "username");
+    const tweets = await Tweet.find().populate("user", "username",).populate("retweets");
     res.json(tweets);
   } catch (error) {
     console.error("Erreur lors de la récupération des tweets :", error); // Affiche l'erreur dans la console
@@ -40,7 +43,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-//Supprimer un tweet
+//Supprimer un tweet avec confirmation
 router.delete("/:id", async (req, res) => {
   try {
     const tweet = await Tweet.findByIdAndDelete(req.params.id);
@@ -63,6 +66,30 @@ router.post("/retweet", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+
+// Créer un commentaire
+router.post("/commentaire", async (req, res) => {
+  try {
+    const tweet = new Tweet(req.body);
+    const newTweet = await tweet.save();
+    res.status(201).json(newTweet);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Créer un signet
+router.post("/signet", async (req, res) => {
+  try {
+    const tweet = new Tweet(req.body);
+    const newTweet = await tweet.save();
+    res.status(201).json(newTweet);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
 
 
 module.exports = router;
