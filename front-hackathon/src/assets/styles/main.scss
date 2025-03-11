@@ -1,3 +1,11 @@
+// Variables
+$primaryColor: #1da1f2; // Twitter Blue
+$secondaryColor: #17bf63;
+$white: #fff;
+$black: #14171a;
+$gray: #657786;
+$lightGray: #e1e8ed;
+$darkGray: #aab8c2;
 
 $paddingContainer: 32px;
 $paddingElement: 16px;
@@ -5,26 +13,28 @@ $paddingElement: 16px;
 $marginContainer: 32px;
 $marginElement: 16px;
 $marginMinimal: 6px;
+$borderRadius: 12px;
 
-$primaryColor: lightblue;
-$secondaryColor: lightgreen;
-$white: #fff;
-
-$gray: #808080;
-$lightGray: #d3d3d3;
-$darkGray: #a9a9a9;
-$black: #000;
-
-
-.page-content {
-    height: 100%;
-    width: 100%;
-}
-
-.label-input {
-    font-size: 1em;
+html, body {
+    height: 100vh;
     margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: $white;
 }
+
+* {
+    box-sizing: border-box;
+}
+
+#root {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ---------------------------------- */
 
 .input-primary {
     border: 1px solid transparent;
@@ -51,61 +61,8 @@ $black: #000;
     }
 }
 
-/* ------------------------------------- */
-
-.layout {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.navbar {
-    width: 100%;
-    height: 75px;
-    display: flex;
-    flex-direction: row;
-    padding: $paddingElement;
-    justify-content: space-between;
-    align-items: center;
-    background-color: $primaryColor;
-
-    h1 {
-        font-size: 1.25rem;
-        font-weight: bold;
-    }
-
-    a {
-        margin: 0 $marginElement;
-        text-decoration: none;
-        color: black;
-
-        &:hover {
-            color: $secondaryColor;
-        }
-    }
-
-    button {
-        background: none;
-        border: none;
-        color: black;
-        cursor: pointer;
-
-        &:hover {
-            color: $secondaryColor;
-        }
-    }
-}
-
-/* ------------------------------------- */
-
-/* ------------------------ login - */ 
-
 .loginPage {
-    width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
@@ -150,6 +107,231 @@ $black: #000;
             }
         }
     }
-    
 }
-/* -------------------------------------------------------- */
+/* ---------------------------------- */
+
+.navbar {
+    width: 100%;
+    max-height: 75px;
+    background-color: $primaryColor;
+    color: $white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $paddingContainer;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+
+    h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+
+        a {
+            color: $white;
+            margin: 0 $marginElement;
+            text-decoration: none;
+            font-size: 1rem;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+// Home Container (Main Layout)
+.homeContainer {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+// Sidebar (Profile + Logout)
+.sidebar {
+    width: 512px;
+    height: 100vh;
+    background-color: $white;
+    border-right: 1px solid $lightGray;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $paddingContainer;
+
+    .profileContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+
+        .contentImage {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: $marginElement;
+        }
+
+        .username {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: $black;
+            margin-bottom: 4px;
+        }
+
+        .handle {
+            color: $gray;
+            font-size: 0.9rem;
+        }
+    }
+
+    .logout {
+        background-color: transparent;
+        color: $primaryColor;
+        border: 2px solid $primaryColor;
+        border-radius: $borderRadius;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s ease, color 0.3s ease;
+        margin-top: 20px;
+
+        &:hover {
+            background-color: $primaryColor;
+            color: $white;
+        }
+    }
+}
+
+// Feed Section
+.splitContainer {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $paddingContainer;
+
+    &.left {
+        width: 50%;
+    }
+
+    .newPostContainer {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 1px solid $lightGray;
+        padding-bottom: $paddingContainer;
+
+        .postInput {
+            width: 100%;
+            height: 100px;
+            border: none;
+            padding: $paddingContainer;
+            font-size: 1.1rem;
+            resize: none;
+            border-radius: $borderRadius;
+            background-color: $lightGray;
+
+            &:focus {
+                outline: none;
+                background-color: $white;
+                border: 1px solid $primaryColor;
+            }
+        }
+
+        .postButton {
+            margin-top: 8px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: $borderRadius;
+            background-color: $primaryColor;
+            color: $white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+
+            &:hover {
+                background-color: $secondaryColor;
+            }
+        }
+    }
+}
+
+// Posts Container
+.postsContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $paddingContainer;
+
+    .noPosts {
+        color: $gray;
+        font-size: 1.1rem;
+        margin-top: 20px;
+    }
+}
+
+// Individual Post
+.post {
+    width: 100%;
+    background-color: $white;
+    padding: $paddingContainer;
+    margin-bottom: $marginElement;
+    border-radius: $borderRadius;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid $lightGray;
+
+    p {
+        margin: 4px 0;
+        color: $black;
+    }
+
+    .user {
+        font-weight: bold;
+        color: $black;
+        margin-bottom: 0.5em;
+    }
+
+    .content {
+        color: $black;
+    }
+
+    .hashtags {
+        color: $gray;
+    }
+
+    .icons {
+        display: flex;
+        justify-content: space-around;
+        margin-top: $marginElement;
+
+        p {
+            display: flex;
+            align-items: center;
+            color: $gray;
+
+            svg {
+                margin-right: 4px;
+            }
+        }
+    }
+
+    .delete {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: $marginElement;
+
+        p {
+            cursor: pointer;
+            color: $gray;
+
+            &:hover {
+                color: $black;
+            }
+        }
+    }
+}
