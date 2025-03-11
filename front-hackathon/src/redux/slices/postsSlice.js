@@ -28,6 +28,33 @@ const fetchPosts = createAsyncThunk(
     }
 );
 
+const repost = createAsyncThunk(
+    "posts/repost",
+    async (values) => {
+        try {
+            const response = await myAxios.post(`/tweets/retweet`, values);
+            return response.data;
+        } catch (error) {
+            error && console.error(error);
+            throw error;
+        }
+    }
+);
+
+const likePost = createAsyncThunk(
+    "posts/likePost",
+    async ({ id, userId, unlike }) => {
+        console.log({ id, userId, unlike });
+        try {
+            const response = await myAxios.put(`/tweets/${id}/like`, { userId, unlike });
+            return { id, likes: response.data.likes };
+        } catch (error) {
+            error && console.error(error);
+            throw error;
+        }
+    }
+);
+
 const postsSlice = createSlice({
     name: 'posts',
     initialState: {
@@ -52,6 +79,7 @@ const postsSlice = createSlice({
                 state.error = action.error.message || "An error occurred";
             })
 
+            // fetchPosts
             .addCase(fetchPosts.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -63,10 +91,43 @@ const postsSlice = createSlice({
             .addCase(fetchPosts.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message || "An error occurred";
+            })
+
+            // repost
+            .addCase(repost.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(repost.fulfilled, (state, action) => {
+                console.log(action.payload)
+                state.loading = false;
+                state.posts.push(action.payload);
+            })
+            .addCase(repost.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || "An error occurred";
+            })
+
+            
+            .addCase(likePost.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(likePost.fulfilled, (state, action) => {
+                state.loading = false;
+                const index = state.posts.findIndex(post => post.id === action.meta.arg.id);
+                if (index !== -1) {
+                    state.posts[index].likes = action.payload.likes;
+                }
+            })
+            .addCase(likePost.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || "An error occurred";
             });
-    }
+            }
 });
 
-export { createPost, fetchPosts };
 
+
+export { createPost, fetchPosts, repost, likePost };
 export default postsSlice.reducer;
