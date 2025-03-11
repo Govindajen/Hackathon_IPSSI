@@ -27,6 +27,7 @@ myAxios.interceptors.request.use(
 myAxios.interceptors.response.use(
     response => {
         // Do something with response data
+        console.log(response)
         return response;
     },
     error => {
