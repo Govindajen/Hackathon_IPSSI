@@ -16,6 +16,11 @@ const App = () => {
             <Home />
           </ProtectedRoutes>
           } />
+        <Route path="/home" element={
+          <ProtectedRoutes>
+            <Home />
+          </ProtectedRoutes>
+          } />
         <Route path="/profile" element={
           <ProtectedRoutes>
             <Profile />

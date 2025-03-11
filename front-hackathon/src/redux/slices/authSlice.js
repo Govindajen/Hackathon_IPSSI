@@ -59,7 +59,7 @@ const authSlice = createSlice({
             })
             .addCase(login.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message;
+                state.error = action.error.message || "An error occurred";
             })
         //register
             .addCase(register.pending, (state) => {
@@ -73,8 +73,8 @@ const authSlice = createSlice({
             })
             .addCase(register.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message;
-            });
+                state.error = action.error.message || "An error occurred";
+            });            
     }
 });
 

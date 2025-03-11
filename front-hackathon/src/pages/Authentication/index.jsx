@@ -62,7 +62,7 @@ export default function Authentication () {
                             <div className="loginContainer">
                             <span>
                                 <p className="label-input">Email</p>
-                                <input className="input-primary" type="text" placeholder="Username" onChange={(e) => setEmail(e.target.value)} value={email}/>
+                                <input className="input-primary" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
                             </span>
                             <span>
                                 <p className="label-input">Username</p>
