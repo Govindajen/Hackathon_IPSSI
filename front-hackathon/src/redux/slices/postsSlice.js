@@ -44,7 +44,6 @@ const repost = createAsyncThunk(
 const likePost = createAsyncThunk(
     "posts/likePost",
     async ({ id, userId, unlike }) => {
-        console.log({ id, userId, unlike });
         try {
             const response = await myAxios.put(`/tweets/${id}/like`, { userId, unlike });
             return { id, likes: response.data.likes };

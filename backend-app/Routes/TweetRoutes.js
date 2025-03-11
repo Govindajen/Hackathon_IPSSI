@@ -103,8 +103,7 @@ router.put("/:id/like", async (req, res) => {
       tweet.likes.push(req.body.userId);
     }
     const updatedTweet = await tweet.save();
-
-    const tweetToReturn = await Tweet.findById(updatedTweet._id).populate("user", "username").populate({
+    const populatedTweet = await Tweet.findById(updatedTweet._id).populate("user", "username").populate({
       path: "retweets",
       populate: {
       path: "user",
@@ -112,8 +111,9 @@ router.put("/:id/like", async (req, res) => {
       }
     });
 
-    res.json(tweetToReturn);
+    res.json(populatedTweet);
   } catch (error) {
+    console.log(error)
     res.status(400).json({ message: error.message });
   }
 });

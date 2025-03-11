@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faArrowsSpin, faBookmark, faTrash, faComment} from '@fortawesome/free-solid-svg-icons';
 
 import { likePost } from "../../redux/slices/postsSlice";
+import CommentsModal from "./comments";
 
 
 export default function Post ({keyD, post, retweetsFunction}) {
@@ -25,10 +26,9 @@ export default function Post ({keyD, post, retweetsFunction}) {
             
             <p className="hashtags">{post.hashtags.map(hashtag => `#${hashtag}`).join(' ')}</p>
             <div className="icons">
-                <p>
+                <p onClick={() => {handleLike()}} >
                     <FontAwesomeIcon 
                         icon={faHeart} 
-                        onClick={() => {handleLike()}} 
                         style={{ color: post.likes.includes(user.id) ? 'red' : '#e1e8ed' }} 
                     /> 
                     {post.likes.length}
@@ -37,7 +37,7 @@ export default function Post ({keyD, post, retweetsFunction}) {
                     <FontAwesomeIcon icon={faArrowsSpin} /> 
                     {post.retweets ? post.retweets.length : 0}
                 </p>
-                <p><FontAwesomeIcon icon={faComment} /> </p>
+                <CommentsModal />
                 <p><FontAwesomeIcon icon={faBookmark} /> {post.signet}</p>
             </div>
 

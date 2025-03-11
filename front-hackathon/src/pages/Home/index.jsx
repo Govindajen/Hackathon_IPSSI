@@ -17,6 +17,13 @@ export default function Home () {
     const user = useSelector(state => state.auth.user.user)
     const posts = useSelector(state => state.posts.posts)
 
+    const [postTemp, setPostTemp] = useState(posts);
+
+    useEffect(() => {
+        setPostTemp(posts);
+    }, [posts]);
+
+
     const [postContent, setPostContent] = useState({
         content: "",
     });
@@ -33,14 +40,12 @@ export default function Home () {
         });
     }
 
-    console.log(reTweet)
-
 
     useEffect(() => {
         dispatch(fetchPosts());
     }, [posts.length])
 
-    const postsJsx = posts.map(post => {
+    const postsJsx = [...postTemp].reverse().map(post => {
         return (
             <Post keyD={post._id} post={post} retweetsFunction={handleRetweet}/>
         )
