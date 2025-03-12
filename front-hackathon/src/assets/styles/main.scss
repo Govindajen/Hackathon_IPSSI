@@ -74,6 +74,66 @@ html, body {
     min-height: 100vh;
     width: 100%;
   }
+
+  .notificationIconBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      border-radius: 50%;
+      background-color: $inputBackground;
+      color: $textColor;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      margin: 0 !important;
+
+      &:hover {
+          background-color: $hoverColor;
+          color: $white;
+      }
+
+      svg {
+          font-size: 1.2rem;
+      }
+  }
+.dropdown-menu  {
+    display: none !important;
+    color: $lightGray !important;
+    width: 300px;
+
+    &.show {
+        top: 25px !important;
+        display: inherit !important;
+        background-color: $primaryColor !important;
+        border-radius: $borderRadius !important;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+        padding: $paddingElement !important;
+    }
+
+    .dropdown-item {
+        padding: $paddingElement !important;
+        color: $textColor !important;
+        transition: background-color 0.2s ease !important;
+        border-radius: $borderRadius !important;
+
+        &:hover {
+            background-color: $hoverColor !important;
+            color: $white !important;
+        }
+
+        &.disabled {
+            color: $darkGray !important;
+            cursor: not-allowed !important;
+        }
+    }
+
+    .dropdown-divider {
+        height: 1px !important;
+        margin: $marginElement 0 !important;
+        overflow: hidden !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+}
   
   .loginPage {
     display: flex;

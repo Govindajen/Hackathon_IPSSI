@@ -4,6 +4,8 @@ import { faHeart, faArrowsSpin, faBookmark, faTrash, faComment} from '@fortaweso
 
 import { likePost } from "../../redux/slices/postsSlice";
 import CommentsModal from "./comments";
+import myAxios from "../../utils/axios";
+import { fetchPosts } from "../../redux/slices/postsSlice";
 
 
 export default function Post ({keyD, post, retweetsFunction}) {
@@ -12,12 +14,19 @@ export default function Post ({keyD, post, retweetsFunction}) {
 
     const isUser = user.id === post.user._id
 
-    const handleLike = () => {
-        dispatch(likePost({ id: post._id, userId: user.id, unlike: post.likes.includes(user.id) }));
+    const handleLike = async () => {
+        //dispatch(likePost({ id: post._id, userId: user.id, unlike: post.likes.includes(user.id) }));
+
+        const response = await myAxios.put(`/tweets/${post._id}/like`, { userId: user.id} );
+
+        if (response.status === 200) {
+            dispatch(fetchPosts());
+        }
+        
     }
 
     return (
-        <div key={keyD} className="post">
+        <div key={post.id} className="post">
             
             <p className="user"> {post.user.username}</p>
             <div className="content">

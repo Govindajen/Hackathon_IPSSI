@@ -45,9 +45,10 @@ export default function Home () {
         dispatch(fetchPosts());
     }, [posts.length])
 
+
     const postsJsx = [...postTemp].reverse().map(post => {
         return (
-            <Post keyD={post._id} post={post} retweetsFunction={handleRetweet}/>
+            <Post key={post._id} post={post} retweetsFunction={handleRetweet}/>
         )
     })
 
