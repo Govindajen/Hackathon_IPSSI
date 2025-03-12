@@ -9,7 +9,10 @@ router.post("/", async (req, res) => {
   try {
     const tweet = new Tweet(req.body);
     const newTweet = await tweet.save();
-    res.status(201).json(newTweet);
+
+    const tweetToReturn = await Tweet.findById(newTweet._id).populate("user", "username")
+
+    res.status(201).json(tweetToReturn);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

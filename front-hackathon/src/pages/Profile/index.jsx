@@ -26,6 +26,8 @@ export default function Profile() {
     const [followersDetails, setFollowersDetails] = useState([]);
     const [followingDetails, setFollowingDetails] = useState([]);
 
+    console.log(followersDetails, followingDetails)
+
     
     useEffect(() => {
         if (!isAuthenticated) {
@@ -158,8 +160,8 @@ export default function Profile() {
                                         )}
                                     </div>
                                     
-                                    <p className="followP" onClick={() => {handleModal()}}>Followers <span> {userProfile.followers.length} </span></p>
-                                    <p className="followP" onClick={() => {handleModal()}}>Following <span> {userProfile.following.length} </span></p>
+                                    <p className="followP" onClick={() => {handleModal()}}>Followers <span> {followersDetails.length} </span></p>
+                                    <p className="followP" onClick={() => {handleModal()}}>Following <span> {followingDetails.length} </span></p>
                                     </span>
                                 </div>
                                 </> : null

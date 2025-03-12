@@ -16,7 +16,7 @@ export default function Post ({keyD, post, retweetsFunction}) {
 
     const isUser = post.user && user.id === post.user._id
 
-    const postCreatedBy = post.user && users.find(u => u._id === post.user._id);
+    const postCreatedBy = post.user && users.find(u => u._id === post.user);
     
     const handleLike = async () => {
         //dispatch(likePost({ id: post._id, userId: user.id, unlike: post.likes.includes(user.id) }));
@@ -43,12 +43,9 @@ export default function Post ({keyD, post, retweetsFunction}) {
 
     return (
         <div key={keyD} className="post">
-            <p className="user" onClick={handleUserClick} style={{ cursor: 'pointer' }}> 
-                {
-                post.user && typeof post.user.username === 'string' ?
-                postCreatedBy.username :
-                'Unknown User'
-                }</p>
+            <p className="user" onClick={handleUserClick} style={{ cursor: 'pointer' }}>
+                 @{post.user.username}
+                </p>
             <div className="content">
                 <p>{post.content}</p>
             </div>
@@ -71,7 +68,7 @@ export default function Post ({keyD, post, retweetsFunction}) {
             {
                 post.retweets ? 
                         <div key={keyD} className="post">
-                            {post.retweets.user && <p className="user"> {post.retweets.user.username}</p>}
+                            {post.retweets.user && <p className="user">  @{post.retweets.user.username}</p>}
                             {post.retweets.content && <div className="content">
                                 <p>{post.retweets.content}</p>
                             </div>}
