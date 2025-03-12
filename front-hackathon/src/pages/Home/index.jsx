@@ -5,12 +5,14 @@ import { fetchUsers, logout } from "../../redux/slices/authSlice";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { createPost, fetchPosts, repost } from "../../redux/slices/postsSlice";
+import { useNavigate } from "react-router-dom";
 
 import Layout from "../../components/Layout"
 import Post from "../../components/Twitter";
 
 export default function Home() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const user = useSelector(state => state.auth.user.user)
     const posts = useSelector(state => state.posts.posts)
@@ -102,8 +104,8 @@ export default function Home() {
                             src="https://images.itnewsinfo.com/lmi/articles/grande/000000090076.jpg" 
                             alt="User profile"
                         />
-                        <p className="username">{user.username}</p>
-                        <p className="handle">@{user.username.toLowerCase()}</p>
+                        <p className="username" onClick={() => {navigate(`/profil/${user.id}`)}}>{user.username}</p>
+                        <p className="handle" onClick={() => {navigate(`/profil/${user.id}`)}}>@{user.username.toLowerCase()}</p>
                     </div>
                     <div>
                         

@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faArrowsSpin, faBookmark, faTrash, faComment} from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faArrowsSpin, faBookmark, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
-import { likePost } from "../../redux/slices/postsSlice";
+// Removed unused import
 import CommentsModal from "./comments";
 import myAxios from "../../utils/axios";
 import { fetchPosts } from "../../redux/slices/postsSlice";
@@ -11,10 +11,13 @@ import { fetchPosts } from "../../redux/slices/postsSlice";
 export default function Post ({keyD, post, retweetsFunction}) {
     const dispatch = useDispatch();
     const user = useSelector(state => state.auth.user.user)
+    const users = useSelector(state => state.auth.users)
     const navigate = useNavigate(); // Initialize useNavigate
 
-    const isUser = user.id === post.user._id
+    const isUser = post.user && user.id === post.user._id
 
+    const postCreatedBy = post.user && users.find(u => u._id === post.user._id);
+    
     const handleLike = async () => {
         //dispatch(likePost({ id: post._id, userId: user.id, unlike: post.likes.includes(user.id) }));
 
@@ -26,13 +29,26 @@ export default function Post ({keyD, post, retweetsFunction}) {
         
     }
 
+    const handleDelete = async () => {
+        const response = await myAxios.delete(`/tweets/${post._id}`);
+
+        if (response.status === 200) {
+            dispatch(fetchPosts());
+        }
+    }
+
     const handleUserClick = () => {
         navigate(`/profil/${post.user._id}`); // Navigate to the profile page with user ID
     }
 
     return (
         <div key={keyD} className="post">
-            <p className="user" onClick={handleUserClick} style={{ cursor: 'pointer' }}> {post.user.username}</p>
+            <p className="user" onClick={handleUserClick} style={{ cursor: 'pointer' }}> 
+                {
+                post.user && typeof post.user.username === 'string' ?
+                postCreatedBy.username :
+                'Unknown User'
+                }</p>
             <div className="content">
                 <p>{post.content}</p>
             </div>
@@ -55,28 +71,16 @@ export default function Post ({keyD, post, retweetsFunction}) {
             {
                 post.retweets ? 
                         <div key={keyD} className="post">
-                            <p className="user"> {post.retweets.user.username}</p>
-                            <div className="content">
+                            {post.retweets.user && <p className="user"> {post.retweets.user.username}</p>}
+                            {post.retweets.content && <div className="content">
                                 <p>{post.retweets.content}</p>
-                            </div>
-                            <p className="hashtags">{post.retweets.hashtags.map(hashtag => `#${hashtag}`).join(' ')}</p>
-                            <div className="icons">
-                                <p>
-                                    <FontAwesomeIcon 
-                                        icon={faHeart} 
-                                        style={{ color: post.retweets.likes.includes(user.id) ? 'red' : '#e1e8ed' }} 
-                                    /> 
-                                    {post.retweets.likes.length}
-                                </p>
-                            </div>
-                            <div className="delete">
-                                {isUser ? <p><FontAwesomeIcon icon={faTrash} /></p> : null}
-                            </div>
+                            </div>}
+                            {post.retweets.hashtags && <p className="hashtags">{post.retweets.hashtags.map(hashtag => `#${hashtag}`).join(' ')}</p>}
                         </div>
                 : null
             }
             <div className="delete">
-                {isUser ? <p><FontAwesomeIcon icon={faTrash} /></p> : null}
+                {isUser ? <p onClick={() => {handleDelete}}><FontAwesomeIcon icon={faTrash} /></p> : null}
             </div>
         </div>
     )

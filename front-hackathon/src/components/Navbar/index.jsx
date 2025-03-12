@@ -1,30 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import NotifDropdown from "./Notif";
-import myAxios from "../../utils/axios";
+
 
 const Navbar = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [searchType, setSearchType] = useState("tweets");
 
-  const handleSearch = async () => {
-    try {
-      const response = await myAxios.get(`/search/search`, {
-        params: {
-          query: searchQuery,
-          type: searchType,
-        },
-      });
-      setSearchResults(response.data);
-    } catch (error) {
-      console.error("Error during search:", error);
-    }
-  };
 
   return (
     <nav className="navbar">
-      <h1 className="text-xl font-bold">Twitter Clone</h1>
+      <h1 className="text-xl font-bold" onClick={() => {navigate('/home')}} style={{"cursor": "pointer"}}>MySocialMedia</h1>
       <div>
         <Link to="/" className="mx-2">Home</Link>
         <Link to="/profil" className="mx-2">Profil</Link>
