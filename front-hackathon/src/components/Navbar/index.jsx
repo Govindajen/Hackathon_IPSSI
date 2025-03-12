@@ -1,9 +1,30 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import NotifDropdown from "./Notif";
+import myAxios from "../../utils/axios";
+import { useNavigate } from "react-router-dom";
 
 
 const Navbar = () => {
+
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchType, setSearchType] = useState("tweets");
+
+  const handleSearch = async () => {
+    try {
+      const response = await myAxios.get(`/search/search`, {
+        params: {
+          query: searchQuery,
+          type: searchType,
+        },
+      });
+      setSearchResults(response.data);
+    } catch (error) {
+      console.error("Error during search:", error);
+    }
+  };
 
 
   return (
