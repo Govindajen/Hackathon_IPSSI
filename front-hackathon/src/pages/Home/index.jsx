@@ -4,15 +4,16 @@ import { useState, useEffect } from "react";
 import { logout } from "../../redux/slices/authSlice";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
-import {createPost, fetchPosts, repost} from "../../redux/slices/postsSlice";
-
+import { createPost, fetchPosts, repost } from "../../redux/slices/postsSlice";
+import { useWebSocket } from "../../components/Layout/wsWrapper";
 
 import Layout from "../../components/Layout"
 import Post from "../../components/Twitter";
 
-
-export default function Home () {
+export default function Home() {
     const dispatch = useDispatch()
+    const ws = useWebSocket();
+    const [wsStatus, setWsStatus] = useState("Disconnected");
 
     const user = useSelector(state => state.auth.user.user)
     const posts = useSelector(state => state.posts.posts)
@@ -23,6 +24,44 @@ export default function Home () {
         setPostTemp(posts);
     }, [posts]);
 
+    useEffect(() => {
+        if (!ws) {
+            setWsStatus("Disconnected");
+        } else {
+            switch (ws.readyState) {
+                case WebSocket.CONNECTING:
+                    setWsStatus("Connecting...");
+                    break;
+                case WebSocket.OPEN:
+                    setWsStatus("Connected");
+                    break;
+                case WebSocket.CLOSING:
+                    setWsStatus("Closing...");
+                    break;
+                case WebSocket.CLOSED:
+                    setWsStatus("Closed");
+                    break;
+                default:
+                    setWsStatus("Unknown");
+            }
+        }
+    }, [ws]);
+
+    const sendMessage = () => {
+        console.log("WebSocket state:", ws);
+    
+        if (!ws) {
+            console.warn("WebSocket is not connected yet.");
+            return;
+        }
+    
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: "test", content: "Hello WebSocket!" }));
+            console.log("Test message sent successfully");
+        } else {
+            console.warn(`WebSocket is not open. Current state: ${ws.readyState}`);
+        }
+    };
 
     const [postContent, setPostContent] = useState({
         content: "",
@@ -33,18 +72,16 @@ export default function Home () {
         tweet: {},
     });
 
-    function handleRetweet (tweet) {
+    function handleRetweet(tweet) {
         setReTweet({
             content: "",
             tweet: tweet,
         });
     }
 
-
     useEffect(() => {
         dispatch(fetchPosts());
-    }, [posts.length])
-
+    }, [dispatch])
 
     const postsJsx = [...postTemp].reverse().map(post => {
         return (
@@ -59,7 +96,6 @@ export default function Home () {
     };
     
     const handlePostSubmit = () => {
-
         if (postContent.content === "") {
             return;
         }
@@ -78,7 +114,6 @@ export default function Home () {
     };
 
     const handleRepostSubmit = () => {
-
         if (reTweet.content === "") {
             return;
         }
@@ -96,10 +131,6 @@ export default function Home () {
             tweet: {},
         });
     };
-
-    /* --------------------------------------------------------------------------- */
-    
-
 
     return (
         <Layout>
@@ -120,6 +151,7 @@ export default function Home () {
                     >
                         Logout <FontAwesomeIcon icon={faArrowRightFromBracket} />
                     </button>
+                    <button onClick={sendMessage}>Test WebSocket</button>
                 </div>
 
                 <div className="splitContainer left">
@@ -153,8 +185,8 @@ export default function Home () {
                         {/* Retweet comment input */}
                         <div className="newPostContainer">
                             <textarea
-                            value={setReTweet.content}
-                            onChange={(e) => setReTweet({...reTweet, content: e.target.value.slice(0, 256)})}
+                                value={reTweet.content}
+                                onChange={(e) => setReTweet({...reTweet, content: e.target.value.slice(0, 256)})}
                                 placeholder="Add a comment..."
                                 className="postInput retweetComment"
                                 maxLength="256"
@@ -162,15 +194,15 @@ export default function Home () {
                             />
                             <span className="retweetButtons">
                                 <button 
-                                    onClick={() => handleRetweet({})} 
+                                    onClick={() => setReTweet({ content: "", tweet: {} })} 
                                     className="postButton"
-                                    >
+                                >
                                     Annuller
                                 </button>
                                 <button 
                                     onClick={handleRepostSubmit} 
                                     className="postButton"
-                                    >
+                                >
                                     Reposter
                                 </button>
                             </span>
@@ -204,7 +236,6 @@ export default function Home () {
 
                 <div className="splitContainer"></div>
             </div>
-
         </Layout>
     )
 }

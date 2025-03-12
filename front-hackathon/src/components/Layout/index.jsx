@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "../Navbar";
 import { useSelector } from "react-redux";
-
+import { WebSocketProvider } from "./wsWrapper"; 
 
 const Layout = ({ children }) => {
   
@@ -9,9 +9,6 @@ const Layout = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [wsControlleur, setWSControlleur] = useState(null);
   const [notifications, setNotifications] = useState([]);
-
-  console.log(onlineUsers)
-
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:3000/ws");
@@ -50,12 +47,16 @@ const Layout = ({ children }) => {
     };
   }, [user.user.id]);
 
+  console.log(wsControlleur)
+
 
   return (
-    <div className="layout">
-      <Navbar />
-      <main className="page-content">{children}</main>
-    </div>
+    <WebSocketProvider wsControlleur={wsControlleur}>
+      <div className="layout">
+        <Navbar />
+        <main className="page-content">{children}</main>
+      </div>
+    </WebSocketProvider>
   );
 };
 

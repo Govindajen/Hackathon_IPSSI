@@ -37,6 +37,7 @@ wss.on("connection", (ws) => {
 
   ws.on("message", (message) => {
     const parsedMessage = JSON.parse(message);
+    console.log("Received:", parsedMessage);
 
     if (parsedMessage.type === "connection") {
       // Add user to online users list
