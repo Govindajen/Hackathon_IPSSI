@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
   const user = useSelector((state) => state.auth.user);
   const [wsControlleur, setWSControlleur] = useState(null);
 
-  useEffect(() => {
+/*   useEffect(() => {
     const ws = new WebSocket("ws://localhost:3000/ws");
 
     ws.onopen = () => {
@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
       closeWebSocket();
       window.removeEventListener("beforeunload", closeWebSocket);
     };
-  }, [user.user.id]);
+  }, [user.user.id]); */
 
 
   return (
