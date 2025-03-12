@@ -21,7 +21,12 @@ const App = () => {
             <Home />
           </ProtectedRoutes>
           } />
-        <Route path="/profile" element={
+        <Route path="/profil" element={
+          <ProtectedRoutes>
+            <Profile />
+          </ProtectedRoutes>
+          } />
+        <Route path="/profil/:userId" element={
           <ProtectedRoutes>
             <Profile />
           </ProtectedRoutes>
