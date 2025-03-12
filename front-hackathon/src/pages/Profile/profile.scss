@@ -1,0 +1,359 @@
+// Variables
+$primary-color: #1da1f2;
+$secondary-color: #657786;
+$border-color: #e1e8ed;
+$hover-color: #f5f8fa;
+$text-color: #14171a;
+$white: #ffffff;
+$modal-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+$border-radius: 12px;
+
+.profilePageContainer {
+    width: 100%;
+    height: 90vh;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.profileHeader {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.profileHeader h1 {
+    font-size: 2.5rem;
+    color: #1da1f2;
+    margin-bottom: 10px;
+}
+
+.profileContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profileCard {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .profileCard {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+.profileAvatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 4px solid #1da1f2;
+}
+
+@media (min-width: 768px) {
+    .profileAvatar {
+        margin-right: 30px;
+        margin-bottom: 0;
+    }
+}
+
+.avatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profileInfo {
+    flex: 1;
+}
+
+.profileName {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.profileHandle {
+    font-size: 1.2rem;
+    color: #657786;
+    margin-bottom: 20px;
+}
+
+.profileDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.detailItem {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.detailIcon {
+    margin-right: 10px;
+    color: #1da1f2;
+    width: 20px;
+}
+
+.profileActions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.logoutButton {
+    background-color: #e0245e;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s;
+}
+
+.logoutButton:hover {
+    background-color: #c01e4e;
+}
+
+.loadingIndicator, .errorMessage {
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+.loadingIndicator {
+    background-color: #f5f8fa;
+}
+
+.errorMessage {
+    background-color: #ffebee;
+    color: #e0245e;
+}
+
+
+
+.bioContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    .bioDetails {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin: 0.5em;
+    }
+
+
+    .nameContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0.5em;
+        margin-right: 1em;
+    }
+    .followContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin: 0.5em;
+    }
+
+    .followP {
+        color: black;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0.5em;
+        padding: 10px 20px;
+        color: black;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: $secondary-color;
+        }
+    }
+}
+
+
+
+// Modal styling
+.modal-content {
+  border: none;
+  border-radius: $border-radius;
+  box-shadow: $modal-shadow;
+  max-width: 400px;
+  margin: 0 auto;
+  
+  .follow-modal-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid $border-color;
+    
+    .modal-title {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: $text-color;
+      margin: 0;
+    }
+    
+    .btn-close {
+      opacity: 0.6;
+      transition: opacity 0.2s;
+      
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+  
+  .follow-modal-body {
+    padding: 0;
+    
+    .follow-tabs {
+      display: flex;
+      border-bottom: 1px solid $border-color;
+      
+      .nav-item {
+        flex: 1;
+        text-align: center;
+        
+        .nav-link {
+          padding: 15px 0;
+          font-weight: 600;
+          color: $secondary-color;
+          border: none;
+          border-radius: 0;
+          cursor: pointer;
+          transition: all 0.2s;
+          
+          &:hover {
+            background-color: $hover-color;
+            color: $primary-color;
+          }
+          
+          &.active {
+            color: $primary-color;
+            border-bottom: 2px solid $primary-color;
+            background-color: transparent;
+          }
+        }
+      }
+    }
+    
+    .follow-list-container {
+      max-height: 300px;
+      overflow-y: auto;
+      
+      .follow-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        
+        .follow-item {
+          padding: 15px 20px;
+          border-bottom: 1px solid $border-color;
+          font-size: 0.95rem;
+          color: $text-color;
+          display: flex;
+          align-items: center;
+          transition: background-color 0.2s;
+          
+          &:hover {
+            background-color: $hover-color;
+          }
+          
+          &:last-child {
+            border-bottom: none;
+          }
+          
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background-color: $secondary-color;
+            border-radius: 50%;
+            margin-right: 12px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+            background-size: 60%;
+            background-position: center;
+            background-repeat: no-repeat;
+          }
+        }
+      }
+    }
+  }
+  
+  .modal-footer {
+    padding: 12px 20px;
+    border-top: 1px solid $border-color;
+    
+    .close-button {
+      background-color: transparent;
+      color: $primary-color;
+      border: 1px solid $primary-color;
+      border-radius: 20px;
+      padding: 6px 15px;
+      font-weight: 600;
+      transition: all 0.2s;
+      
+      &:hover {
+        background-color: rgba($primary-color, 0.1);
+      }
+    }
+  }
+}
+
+// Scrollbar styling
+.follow-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.follow-list-container::-webkit-scrollbar-track {
+  background: $white;
+}
+
+.follow-list-container::-webkit-scrollbar-thumb {
+  background-color: $border-color;
+  border-radius: 20px;
+}
+
+.followButton {
+    background-color: $primary-color;
+    color: $white;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: $primary-color;
+    }
+}

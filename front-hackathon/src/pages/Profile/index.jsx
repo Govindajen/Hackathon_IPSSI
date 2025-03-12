@@ -1,46 +1,48 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom"; // Import useParams
+import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightFromBracket, faUser, faEnvelope, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import Layout from "../../components/Layout";
 import myAxios from "../../utils/axios";
+import FollowModal from "./followModal";
 import { logout } from "../../redux/slices/authSlice";
-import "./profile.css";
+import "./profile.scss";
 
 export default function Profile() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { userId } = useParams(); // Get userId from URL params
+    const { userId } = useParams();
     
-    // Récupérer l'utilisateur depuis le store Redux
     const user = useSelector(state => state.auth.user?.user);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const allUsers = useSelector(state => state.auth.users);
     
     // État local pour stocker les données supplémentaires du profil
     const [userProfile, setUserProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isFollowing, setIsFollowing] = useState(false); // State to track follow status
+    const [isFollowing, setIsFollowing] = useState(false); 
+    const [followersDetails, setFollowersDetails] = useState([]);
+    const [followingDetails, setFollowingDetails] = useState([]);
+
     
-    // Rediriger vers la page de connexion si l'utilisateur n'est pas authentifié
     useEffect(() => {
         if (!isAuthenticated) {
             navigate('/login');
         }
     }, [isAuthenticated, navigate]);
     
-    // Récupérer les données du profil utilisateur
     useEffect(() => {
         const fetchUserProfile = async () => {
-            const id = userId || user?.id; // Use userId from URL or current user ID
+            const id = userId || user?.id; 
             if (!id) return;
             
             try {
                 setLoading(true);
                 const response = await myAxios.get(`/users/${id}`);
                 setUserProfile(response.data);
-                setIsFollowing(response.data.followers.includes(user.id)); // Check if the user is following
+                setIsFollowing(response.data.followers.includes(user.id)); 
                 setLoading(false);
             } catch (err) {
                 console.error("Erreur lors de la récupération du profil:", err);
@@ -52,19 +54,20 @@ export default function Profile() {
         fetchUserProfile();
     }, [user, userId]);
     
-    // Gérer la déconnexion
-    const handleLogout = () => {
-        dispatch(logout());
-        navigate('/login');
-    };
-
-    // Gérer le follow/unfollow
     const handleFollow = async () => {
         try {
             if (isFollowing) {
-                await myAxios.post(`/users/${userProfile._id}/unfollow`, { userId: user.id });
+                const unfollow = await myAxios.post(`/users/${userProfile._id}/unfollow`, { userId: user.id });
+                if (unfollow.status === 200) {
+                    const response = await myAxios.get(`/users/${userProfile._id}`);
+                    setUserProfile(response.data);
+                }
             } else {
-                await myAxios.post(`/users/${userProfile._id}/follow`, { userId: user.id });
+                const follow =  await myAxios.post(`/users/${userProfile._id}/follow`, { userId: user.id });
+                if (follow.status === 200) {
+                    const response = await myAxios.get(`/users/${userProfile._id}`);
+                    setUserProfile(response.data);
+                }
             }
             setIsFollowing(!isFollowing);
         } catch (err) {
@@ -82,6 +85,31 @@ export default function Profile() {
             </Layout>
         );
     }
+    
+    useEffect(() => {
+        if (userProfile) {
+            const followers = userProfile.followers.map(followerId => {
+                const user = allUsers.find(u => u._id === followerId);
+                return user ? { username: user.username } : null;
+            }).filter(Boolean);
+    
+            const following = userProfile.following.map(followingId => {
+                const user = allUsers.find(u => u._id === followingId);
+                return user ? { username: user.username } : null;
+            }).filter(Boolean);
+    
+            setFollowersDetails(followers);
+            setFollowingDetails(following);
+        }
+    }, [userProfile, allUsers]);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    }
+
+    
     
     return (
         <Layout>
@@ -101,11 +129,41 @@ export default function Profile() {
                         </div>
                         
                         <div className="profileInfo">
-                            <h2 className="profileName">{userProfile?.username}</h2>
-                            <p className="profileHandle">@{userProfile?.username.toLowerCase()}</p>
+                            {userProfile ? 
+                                <>
+                                <div className="bioContainer">
+                                    <div className="bioDetails">
+                                        <span className="nameContainer">
+                                            <h2 className="profileName">{userProfile?.username}</h2>
+                                            <p className="profileHandle">@{userProfile?.username.toLowerCase()}</p>
+                                        </span>
+                                        <p className="profileHandle">{userProfile?.bio}</p>
+                                    </div>
+                                    <span className="followContainer">
+                                    <FollowModal
+                                        followers={followersDetails}
+                                        following={followingDetails}
+                                        isOpen={isModalOpen}
+                                        func={handleModal}
+                                    />
 
-                            <p className="followP">Followers: <span> {userProfile.followers.length} </span></p>
-                            <p className="followP">Following: <span> {userProfile.following.length} </span></p>
+                                    <div className="profileActions">
+                                        {userProfile && userProfile._id !== user.id && (
+                                            <button 
+                                                onClick={handleFollow} 
+                                                className="followButton"
+                                            >
+                                                {isFollowing ? "Unfollow" : "Follow"}
+                                            </button>
+                                        )}
+                                    </div>
+                                    
+                                    <p className="followP" onClick={() => {handleModal()}}>Followers <span> {userProfile.followers.length} </span></p>
+                                    <p className="followP" onClick={() => {handleModal()}}>Following <span> {userProfile.following.length} </span></p>
+                                    </span>
+                                </div>
+                                </> : null
+                            }
                             
                             <div className="profileDetails">
                                 <div className="detailItem">
@@ -125,23 +183,7 @@ export default function Profile() {
                             </div>
                         </div>
                     </div>
-                    
-                    <div className="profileActions">
-                        {userProfile && userProfile._id !== user.id && (
-                            <button 
-                                onClick={handleFollow} 
-                                className="followButton"
-                            >
-                                {isFollowing ? "Unfollow" : "Follow"}
-                            </button>
-                        )}
-                        <button 
-                            onClick={handleLogout} 
-                            className="logoutButton"
-                        >
-                            Déconnexion <FontAwesomeIcon icon={faArrowRightFromBracket} />
-                        </button>
-                    </div>
+                
                 </div>
                 
                 {loading && (
