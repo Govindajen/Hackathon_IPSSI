@@ -13,6 +13,7 @@ dotenv.config();
 const tweetsRouter = require("./Routes/TweetRoutes");
 const usersRouter = require("./Routes/UserRoutes");
 const notifsRouter = require("./Routes/NotifRoutes");
+const searchRouter = require('./Routes/search');
 
 mongoose.connect(process.env.MONGODB_URI, {});
 
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use("/tweets", tweetsRouter);
 app.use("/users", usersRouter);
 app.use("/notifs", notifsRouter);
+app.use('/search', searchRouter);
 
 // Create HTTP server and attach Express
 const server = http.createServer(app);

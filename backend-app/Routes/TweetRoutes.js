@@ -140,6 +140,27 @@ router.post("/signet", async (req, res) => {
   }
 });
 
+// fonction de recherche de tweet par username de l'utilisateur
+router.get("/user/:username", async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username });
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+    const tweets = await Tweet.find({ user: user._id }).populate("user", "username").populate({
+      path: "retweets",
+      populate: {
+        path: "user",
+        select: "username"
+      }
+    });
+    res.json(tweets);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des tweets par username :", error);
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
+  }
+});
+
 
 
 
