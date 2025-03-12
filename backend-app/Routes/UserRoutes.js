@@ -9,6 +9,9 @@ router.post("/register", async (req, res) => {
   console.log(req.body)
     try {
         const { username, email, password } = req.body
+        if (!password) {
+            return res.status(400).json({ message: "Password is required" });
+        }
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
         const user = new User({
@@ -16,10 +19,19 @@ router.post("/register", async (req, res) => {
             email,
             password: hashedPassword
         })
+        const payload = {
+            id: user._id,
+            username: user.username,
+            email: user.email,
+        };
+        const token = jwt.sign(payload, process.env.JWT_SECRET || 'default_secret', {
+            expiresIn: "7d",
+        })
+
         await user.save()
-        res.status(201).json({ status: true, user: {username: user.username, email: user.email} })
+        res.status(201).json({ status: true, user: {id: user._id, username: user.username, email: user.email}, token: token})
     } catch (error) {
-        res.status(500).json({ message: "Erreur serveur" })
+        res.status(500).json({ message: "Erreur serveur", error})
     }
 });
  

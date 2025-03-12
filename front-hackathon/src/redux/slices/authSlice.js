@@ -20,7 +20,7 @@ const register = createAsyncThunk(
         async (values) => {
             try {
                 const response = await myAxios.post('/users/register', values)
-                return response.data.data
+                return response.data
             } catch (error) {
                 error && console.error(error)
                 throw error;

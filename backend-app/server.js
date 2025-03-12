@@ -28,7 +28,10 @@ app.use("/notifs", notifsRouter);
 const server = http.createServer(app);
 
 // WebSocket Server
-const wss = new WebSocketServer({ server });
+const wss = new WebSocketServer({ 
+  server,
+  path: '/ws' 
+});
 
 let onlineUsers = []; // Move this line up
 
@@ -37,7 +40,7 @@ wss.on("connection", (ws) => {
 
   ws.on("message", (message) => {
     const parsedMessage = JSON.parse(message);
-    console.log("Received:", parsedMessage);
+    console.log("Received message:", parsedMessage);
 
     if (parsedMessage.type === "connection") {
       // Add user to online users list

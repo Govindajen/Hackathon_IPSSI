@@ -47,11 +47,9 @@ const Layout = ({ children }) => {
     };
   }, [user.user.id]);
 
-  console.log(wsControlleur)
-
 
   return (
-    <WebSocketProvider wsControlleur={wsControlleur}>
+    <WebSocketProvider value={wsControlleur}>
       <div className="layout">
         <Navbar />
         <main className="page-content">{children}</main>

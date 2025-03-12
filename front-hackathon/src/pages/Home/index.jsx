@@ -13,6 +13,8 @@ import Post from "../../components/Twitter";
 export default function Home() {
     const dispatch = useDispatch()
     const ws = useWebSocket();
+
+    console.log('ws-------------------', useWebSocket)
     const [wsStatus, setWsStatus] = useState("Disconnected");
 
     const user = useSelector(state => state.auth.user.user)
