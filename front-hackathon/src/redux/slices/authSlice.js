@@ -28,22 +28,34 @@ const register = createAsyncThunk(
         }
 )
 
+const fetchUsers = createAsyncThunk(
+    "auth/fetchUsers",
+    async () => {
+        try {
+            const response = await myAxios.get('/users');
+            return response.data;
+        } catch (error) {
+            error && console.error(error);
+            throw error;
+        }
+    }
+);
+
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
         isAuthenticated: false,
         user: null,
+        users: [],
         loading: false,
         error: null,
-
-        users: [],
         matchedUsers: []
     },
     reducers: {
         logout: (state) => {
             state.isAuthenticated = false;
             state.user = null;
-            },
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -74,12 +86,25 @@ const authSlice = createSlice({
             .addCase(register.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message || "An error occurred";
-            });            
+            })
+        //fetchUsers
+            .addCase(fetchUsers.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchUsers.fulfilled, (state, action) => {
+                state.loading = false;
+                state.users = action.payload;
+            })
+            .addCase(fetchUsers.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || "An error occurred";
+            });
     }
 });
 
-export const {  logout } = authSlice.actions;
+export const { logout } = authSlice.actions;
 
-export { login, register};
+export { login, register, fetchUsers };
 
 export default authSlice.reducer;

@@ -103,6 +103,9 @@ export default function Profile() {
                         <div className="profileInfo">
                             <h2 className="profileName">{userProfile?.username}</h2>
                             <p className="profileHandle">@{userProfile?.username.toLowerCase()}</p>
+
+                            <p className="followP">Followers: <span> {userProfile.followers.length} </span></p>
+                            <p className="followP">Following: <span> {userProfile.following.length} </span></p>
                             
                             <div className="profileDetails">
                                 <div className="detailItem">

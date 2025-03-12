@@ -44,7 +44,7 @@ wss.on("connection", (ws) => {
 
     if (parsedMessage.type === "connection") {
       // Add user to online users list
-      onlineUsers.push(parsedMessage.userId);
+      onlineUsers.push({ userId: parsedMessage.userId, wsId: ws.id });
       wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
           client.send(JSON.stringify({ type: "onlineUsers", users: onlineUsers }));
@@ -54,7 +54,7 @@ wss.on("connection", (ws) => {
 
     if (parsedMessage.type === "close") {
       // Remove user from online users list
-      onlineUsers = onlineUsers.filter((userId) => userId !== parsedMessage.userId);
+      onlineUsers = onlineUsers.filter((user) => user.userId !== parsedMessage.userId);
       wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
           client.send(JSON.stringify({ type: "onlineUsers", users: onlineUsers }));

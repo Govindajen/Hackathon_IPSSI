@@ -1,21 +1,16 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useState, useEffect } from "react";
 
-import { logout } from "../../redux/slices/authSlice";
+import { fetchUsers, logout } from "../../redux/slices/authSlice";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { createPost, fetchPosts, repost } from "../../redux/slices/postsSlice";
-import { useWebSocket } from "../../components/Layout/wsWrapper";
 
 import Layout from "../../components/Layout"
 import Post from "../../components/Twitter";
 
 export default function Home() {
     const dispatch = useDispatch()
-    const ws = useWebSocket();
-
-    console.log('ws-------------------', useWebSocket)
-    const [wsStatus, setWsStatus] = useState("Disconnected");
 
     const user = useSelector(state => state.auth.user.user)
     const posts = useSelector(state => state.posts.posts)
@@ -26,44 +21,6 @@ export default function Home() {
         setPostTemp(posts);
     }, [posts]);
 
-    useEffect(() => {
-        if (!ws) {
-            setWsStatus("Disconnected");
-        } else {
-            switch (ws.readyState) {
-                case WebSocket.CONNECTING:
-                    setWsStatus("Connecting...");
-                    break;
-                case WebSocket.OPEN:
-                    setWsStatus("Connected");
-                    break;
-                case WebSocket.CLOSING:
-                    setWsStatus("Closing...");
-                    break;
-                case WebSocket.CLOSED:
-                    setWsStatus("Closed");
-                    break;
-                default:
-                    setWsStatus("Unknown");
-            }
-        }
-    }, [ws]);
-
-    const sendMessage = () => {
-        console.log("WebSocket state:", ws);
-    
-        if (!ws) {
-            console.warn("WebSocket is not connected yet.");
-            return;
-        }
-    
-        if (ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify({ type: "test", content: "Hello WebSocket!" }));
-            console.log("Test message sent successfully");
-        } else {
-            console.warn(`WebSocket is not open. Current state: ${ws.readyState}`);
-        }
-    };
 
     const [postContent, setPostContent] = useState({
         content: "",
@@ -83,6 +40,7 @@ export default function Home() {
 
     useEffect(() => {
         dispatch(fetchPosts());
+        dispatch(fetchUsers());
     }, [dispatch])
 
     const postsJsx = [...postTemp].reverse().map(post => {
@@ -147,13 +105,15 @@ export default function Home() {
                         <p className="username">{user.username}</p>
                         <p className="handle">@{user.username.toLowerCase()}</p>
                     </div>
+                    <div>
+                        
+                    </div>
                     <button 
                         onClick={() => dispatch(logout())} 
                         className="logout"
                     >
                         Logout <FontAwesomeIcon icon={faArrowRightFromBracket} />
                     </button>
-                    <button onClick={sendMessage}>Test WebSocket</button>
                 </div>
 
                 <div className="splitContainer left">

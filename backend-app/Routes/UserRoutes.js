@@ -74,6 +74,16 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
+
+//Récupérer un utilisateur
+router.get("/", async (req, res) => {
+    try {
+        const users = await User.find();
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+});
  
 //Supprimer un utilisateur
 router.delete("/:id", async (req, res) => {

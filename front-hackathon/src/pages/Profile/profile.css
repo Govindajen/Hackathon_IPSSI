@@ -136,3 +136,11 @@
     background-color: #ffebee;
     color: #e0245e;
 }
+
+
+.followP {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
