@@ -74,6 +74,66 @@ html, body {
     min-height: 100vh;
     width: 100%;
   }
+
+  .notificationIconBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      border-radius: 50%;
+      background-color: $inputBackground;
+      color: $textColor;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      margin: 0 !important;
+
+      &:hover {
+          background-color: $hoverColor;
+          color: $white;
+      }
+
+      svg {
+          font-size: 1.2rem;
+      }
+  }
+.dropdown-menu  {
+    display: none !important;
+    color: $lightGray !important;
+    width: 300px;
+
+    &.show {
+        top: 25px !important;
+        display: inherit !important;
+        background-color: $primaryColor !important;
+        border-radius: $borderRadius !important;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+        padding: $paddingElement !important;
+    }
+
+    .dropdown-item {
+        padding: $paddingElement !important;
+        color: $textColor !important;
+        transition: background-color 0.2s ease !important;
+        border-radius: $borderRadius !important;
+
+        &:hover {
+            background-color: $hoverColor !important;
+            color: $white !important;
+        }
+
+        &.disabled {
+            color: $darkGray !important;
+            cursor: not-allowed !important;
+        }
+    }
+
+    .dropdown-divider {
+        height: 1px !important;
+        margin: $marginElement 0 !important;
+        overflow: hidden !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+}
   
   .loginPage {
     display: flex;
@@ -856,4 +916,187 @@ hr {
 body.dark-theme {
     background-color: $backgroundColor;
     color: $textColor;
+}
+
+/* ---------------- */
+
+// CommentsModal.scss - Using the variables from your main stylesheet
+
+.comments-modal-container {
+    display: inline-block;
+    
+    p {
+      display: flex;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      margin: 0;
+      
+      &:hover {
+        color: $primaryColor;
+      }
+      
+      .comments-icon {
+        margin-right: 6px;
+      }
+      
+      .comments-count {
+        font-size: 0.9rem;
+      }
+    }
+  }
+  
+  // Modal styling
+  .comments-modal {
+    .modal-content {
+      background-color: $backgroundColor;
+      border-radius: $borderRadius;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .modal-header {
+      background-color: $backgroundColor;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: $paddingElement;
+      
+      .modal-title {
+        color: $textColor;
+        font-weight: 600;
+        font-size: 1.1rem;
+      }
+      
+      .close {
+        color: $textColor;
+        opacity: 0.7;
+        
+        &:hover {
+          opacity: 1;
+          color: $secondaryColor;
+        }
+      }
+    }
+    
+    .comments-modal-body {
+      padding: $paddingElement;
+      max-height: 60vh;
+      overflow-y: auto;
+      background-color: $backgroundColor;
+      
+      .comments-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        
+        .comment-item {
+          padding: 12px 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          
+          &:last-child {
+            border-bottom: none;
+          }
+          
+          .comment-user {
+            margin-bottom: 5px;
+            color: $textColor;
+            font-size: 0.95rem;
+            
+            strong {
+              font-weight: 700;
+            }
+          }
+          
+          .comment-content {
+            color: $textColor;
+            line-height: 1.5;
+            word-wrap: break-word;
+            font-size: 0.95rem;
+          }
+        }
+      }
+      
+      .no-comments {
+        color: rgba(255, 255, 255, 0.6);
+        text-align: center;
+        padding: 2rem 0;
+        font-style: italic;
+      }
+    }
+    
+    .modal-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: $paddingElement;
+      background-color: $backgroundColor;
+      
+      .close-button {
+        background-color: $secondaryColor;
+        border: none;
+        border-radius: 30px;
+        padding: 8px 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(253, 121, 168, 0.3);
+        }
+      }
+    }
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 576px) {
+    .comments-modal .modal-dialog {
+      margin: 0.5rem;
+    }
+    
+    .comments-modal-body {
+      padding: 12px;
+    }
+  }
+.add-comment-form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+
+    .comment-input {
+        flex: 1;
+        padding: 10px;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background-color: $inputBackground;
+        color: $textColor;
+        resize: none;
+        height: 50px;
+
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px $primaryColor;
+        }
+
+        &::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+    }
+
+    .add-comment-button {
+        background-color: $primaryColor;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: $hoverColor;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+    }
 }

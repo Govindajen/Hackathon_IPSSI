@@ -4,6 +4,9 @@ import { faHeart, faArrowsSpin, faBookmark, faTrash, faComment} from '@fortaweso
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 import { likePost } from "../../redux/slices/postsSlice";
+import CommentsModal from "./comments";
+import myAxios from "../../utils/axios";
+import { fetchPosts } from "../../redux/slices/postsSlice";
 
 export default function Post ({keyD, post, retweetsFunction}) {
     const dispatch = useDispatch();
@@ -12,8 +15,15 @@ export default function Post ({keyD, post, retweetsFunction}) {
 
     const isUser = user.id === post.user._id
 
-    const handleLike = () => {
-        dispatch(likePost({ id: post._id, userId: user.id, unlike: post.likes.includes(user.id) }));
+    const handleLike = async () => {
+        //dispatch(likePost({ id: post._id, userId: user.id, unlike: post.likes.includes(user.id) }));
+
+        const response = await myAxios.put(`/tweets/${post._id}/like`, { userId: user.id} );
+
+        if (response.status === 200) {
+            dispatch(fetchPosts());
+        }
+        
     }
 
     const handleUserClick = () => {
@@ -28,10 +38,9 @@ export default function Post ({keyD, post, retweetsFunction}) {
             </div>
             <p className="hashtags">{post.hashtags.map(hashtag => `#${hashtag}`).join(' ')}</p>
             <div className="icons">
-                <p>
+                <p onClick={() => {handleLike()}} >
                     <FontAwesomeIcon 
                         icon={faHeart} 
-                        onClick={() => {handleLike()}} 
                         style={{ color: post.likes.includes(user.id) ? 'red' : '#e1e8ed' }} 
                     /> 
                     {post.likes.length}
@@ -40,7 +49,7 @@ export default function Post ({keyD, post, retweetsFunction}) {
                     <FontAwesomeIcon icon={faArrowsSpin} /> 
                     {post.retweets ? post.retweets.length : 0}
                 </p>
-                <p><FontAwesomeIcon icon={faComment} /> </p>
+                <CommentsModal />
                 <p><FontAwesomeIcon icon={faBookmark} /> {post.signet}</p>
             </div>
             {

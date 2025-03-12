@@ -27,12 +27,10 @@ myAxios.interceptors.request.use(
 myAxios.interceptors.response.use(
     response => {
         // Do something with response data
-        console.log(response)
         return response;
     },
     error => {
         // Do something with response error
-        console.log(error)
         if (error.response.status === 401) {
             // Handle unauthorized error
             console.log('Unauthorized, logging out...');

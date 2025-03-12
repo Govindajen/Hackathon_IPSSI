@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import NotifDropdown from "./Notif";
 
 
 const Navbar = () => {
@@ -11,6 +12,7 @@ const Navbar = () => {
         <Link to="/" className="mx-2">Home</Link>
         <Link to="/profil" className="mx-2">Profil</Link>
       </div>
+      
     </nav>
   );
 };

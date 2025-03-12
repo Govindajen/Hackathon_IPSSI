@@ -97,14 +97,13 @@ router.put("/:id/like", async (req, res) => {
     if (!tweet.likes) {
       tweet.likes = [];
     }
-    if (req.body.unlike) {
-      tweet.likes = tweet.likes.filter(userId => userId.toString() !== req.body.userId);
+    if (tweet.likes.includes(req.body.userId)) {
+      tweet.likes = tweet.likes.filter(userId => userId.toString() !== String(req.body.userId));
     } else {
       tweet.likes.push(req.body.userId);
     }
     const updatedTweet = await tweet.save();
-
-    const tweetToReturn = await Tweet.findById(updatedTweet._id).populate("user", "username").populate({
+    const populatedTweet = await Tweet.findById(updatedTweet._id).populate("user", "username").populate({
       path: "retweets",
       populate: {
       path: "user",
@@ -112,8 +111,9 @@ router.put("/:id/like", async (req, res) => {
       }
     });
 
-    res.json(tweetToReturn);
+    res.json({like: true, tweet: populatedTweet});
   } catch (error) {
+    console.log(error)
     res.status(400).json({ message: error.message });
   }
 });
