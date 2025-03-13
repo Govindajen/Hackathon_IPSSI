@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import NotifDropdown from "./NotificationDropdown";
 import myAxios from "../../utils/axios";
@@ -7,11 +7,15 @@ import React from 'react';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Dropdown } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBell } from '@fortawesome/free-solid-svg-icons'
+import { fetchNotifications } from '../../redux/slices/notifSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const Navbar = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [notifications, setNotifications] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [searchType, setSearchType] = useState("tweets");
@@ -29,6 +33,10 @@ const Navbar = () => {
       console.error("Error during search:", error);
     }
   };
+
+  useEffect(() => {
+    dispatch(fetchNotifications());
+  }, []);
 
 
   return (

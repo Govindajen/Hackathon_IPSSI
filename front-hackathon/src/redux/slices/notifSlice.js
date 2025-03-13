@@ -6,7 +6,7 @@ const fetchNotifications = createAsyncThunk(
     "notifications/fetchNotifications", 
     async () => {
         try {
-            const response = await myAxios.get('/notif');
+            const response = await myAxios.get('/notifs');
             return response.data;
         } catch (error) {
             error && console.error(error);
