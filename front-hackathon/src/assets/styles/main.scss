@@ -1,30 +1,31 @@
-// Variables
+// Variables - Keep your custom color scheme
 $primaryColor: #6c5ce7; // Violet au lieu du bleu Twitter
 $secondaryColor: #fd79a8; // Rose au lieu du vert
-$backgroundColor: #2d3436; // Gris foncé pour le fond
-$textColor: #dfe6e9; // Gris clair pour le texte
+$backgroundColor: #15202b; // Darker blue similar to X's night mode
+$textColor: #ffffff; // White text
 $white: #fff;
 $black: #14171a;
 $gray: #657786;
 $lightGray: #e1e8ed;
 $darkGray: #aab8c2;
-$inputBackground: #636e72; // Gris pour les inputs
+$inputBackground: #253341; // Darker input background like X
 $hoverColor: #a29bfe; // Violet clair pour les effets hover
 $errorColor: #ff7675; // Rouge pour les erreurs
 $successColor: #55efc4; // Vert pour les succès
+$borderColor: #38444d; // Border color more similar to X
 
-$paddingContainer: 32px;
-$paddingElement: 16px;
+$paddingContainer: 16px;
+$paddingElement: 12px;
 
-$marginContainer: 32px;
-$marginElement: 16px;
-$marginMinimal: 6px;
-$borderRadius: 12px;
+$marginContainer: 16px;
+$marginElement: 12px;
+$marginMinimal: 4px;
+$borderRadius: 16px;
 
 html, body {
     height: 100vh;
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: $backgroundColor;
     color: $textColor;
 }
@@ -43,81 +44,82 @@ html, body {
 /* ---------------------------------- */
 // Authentication Page Styles
 
-/* Variables de couleurs - Remplacez-les par vos préférences */
 :root {
-    --primary-color: #6c5ce7; /* Violet au lieu du bleu de Twitter */
-    --secondary-color: #fd79a8; /* Rose au lieu du blanc */
-    --background-color: #2d3436; /* Gris foncé au lieu du noir */
-    --text-color: #dfe6e9; /* Gris clair pour le texte */
-    --input-background: #636e72; /* Gris pour les inputs */
-    --hover-color: #a29bfe; /* Violet clair pour les effets hover */
-    --error-color: #ff7675; /* Rouge pour les erreurs */
-    --success-color: #55efc4; /* Vert pour les succès */
-  }
+    --primary-color: #{$primaryColor};
+    --secondary-color: #{$secondaryColor};
+    --background-color: #{$backgroundColor};
+    --text-color: #{$textColor};
+    --input-background: #{$inputBackground};
+    --hover-color: #{$hoverColor};
+    --error-color: #{$errorColor};
+    --success-color: #{$successColor};
+    --border-color: #{$borderColor};
+}
   
-  * {
-    box-sizing: border-box;
+* {
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  }
+}
   
-  body {
+body {
     background-color: var(--background-color);
     color: var(--text-color);
-  }
+}
   
-  .page-content {
+.page-content {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     width: 100%;
-  }
+}
 
-  .notificationIconBtn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-      border-radius: 50%;
-      background-color: $inputBackground;
-      color: $textColor;
-      cursor: pointer;
-      transition: background-color 0.2s ease, color 0.2s ease;
-      margin: 0 !important;
+.notificationIconBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    background-color: transparent;
+    color: $textColor;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    margin: 0 !important;
 
-      &:hover {
-          background-color: $hoverColor;
-          color: $white;
-      }
+    &:hover {
+        background-color: rgba(239, 243, 244, 0.1);
+        color: $white;
+    }
 
-      svg {
-          font-size: 1.2rem;
-      }
-  }
-.dropdown-menu  {
+    svg {
+        font-size: 1.2rem;
+    }
+}
+
+.dropdown-menu {
     display: none !important;
-    color: $lightGray !important;
+    color: $textColor !important;
     width: 300px;
 
     &.show {
         top: 25px !important;
         display: inherit !important;
-        background-color: $primaryColor !important;
-        border-radius: $borderRadius !important;
+        background-color: $backgroundColor !important;
+        border-radius: 12px !important;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
         padding: $paddingElement !important;
+        border: 1px solid $borderColor !important;
     }
 
     .dropdown-item {
         padding: $paddingElement !important;
         color: $textColor !important;
         transition: background-color 0.2s ease !important;
-        border-radius: $borderRadius !important;
+        border-radius: 4px !important;
 
         &:hover {
-            background-color: $hoverColor !important;
+            background-color: rgba(239, 243, 244, 0.1) !important;
             color: $white !important;
         }
 
@@ -131,16 +133,16 @@ html, body {
         height: 1px !important;
         margin: $marginElement 0 !important;
         overflow: hidden !important;
-        background-color: rgba(255, 255, 255, 0.1) !important;
+        background-color: $borderColor !important;
     }
 }
   
-  .loginPage {
+.loginPage {
     display: flex;
     width: 90%;
     max-width: 1200px;
     height: 600px;
-    border-radius: 15px;
+    border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 
@@ -154,9 +156,9 @@ html, body {
         padding: 40px;
         position: relative;
         overflow: hidden;
-      }
+    }
       
-      .leftArea::before {
+    .leftArea::before {
         content: "";
         position: absolute;
         top: 0;
@@ -166,24 +168,24 @@ html, body {
         background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="rgba(255,255,255,0.1)" d="M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.392.106-.803.162-1.227.162-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.595 1.25-3.604 1.995-5.786 1.995-.376 0-.747-.022-1.112-.065 2.062 1.323 4.51 2.093 7.14 2.093 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z"></path></svg>');
         background-repeat: repeat;
         opacity: 0.2;
-      }
+    }
       
-      .leftArea h1 {
+    .leftArea h1 {
         font-size: 2.5rem;
         margin-bottom: 20px;
         color: white;
         z-index: 1;
-      }
+    }
       
-      .leftArea p {
+    .leftArea p {
         font-size: 1.2rem;
         text-align: center;
         color: rgba(255, 255, 255, 0.9);
         max-width: 80%;
         z-index: 1;
-      }
+    }
       
-      .rightArea {
+    .rightArea {
         flex: 1;
         background-color: var(--background-color);
         display: flex;
@@ -191,102 +193,95 @@ html, body {
         justify-content: center;
         align-items: center;
         padding: 40px;
-      }
+    }
       
-      .loginContainer {
+    .loginContainer {
         width: 100%;
         max-width: 380px;
         display: flex;
         flex-direction: column;
         gap: 20px;
         margin-bottom: 20px;
-      }
+    }
       
-      .label-input {
+    .label-input {
         font-size: 1rem;
         font-weight: 500;
         margin-bottom: 8px;
         color: var(--text-color);
-      }
+    }
       
-      .input-primary {
+    .input-primary {
         width: 100%;
-        padding: 15px;
-        border-radius: 30px;
-        border: none;
+        padding: 12px 16px;
+        border-radius: 4px;
+        border: 1px solid $borderColor;
         background-color: var(--input-background);
         color: white;
         font-size: 1rem;
-        transition: all 0.3s ease;
-      }
+        transition: all 0.2s ease;
+    }
       
-      .input-primary:focus {
+    .input-primary:focus {
         outline: none;
-        box-shadow: 0 0 0 2px var(--primary-color);
-      }
+        border-color: var(--primary-color);
+    }
       
-      .input-primary::placeholder {
+    .input-primary::placeholder {
         color: rgba(255, 255, 255, 0.5);
-      }
+    }
       
-      .btn-primary {
-        padding: 12px 20px;
-        border-radius: 30px;
+    .btn-primary {
+        padding: 12px 16px;
+        border-radius: 9999px;
         border: none;
         background-color: var(--primary-color);
         color: white;
         font-size: 1rem;
         font-weight: 700;
         cursor: pointer;
-        transition: all 0.3s ease;
-      }
+        transition: all 0.2s ease;
+    }
       
-      .btn-primary:hover {
+    .btn-primary:hover {
         background-color: var(--hover-color);
-        transform: translateY(-2px);
-      }
+    }
       
-      .loginBtn {
+    .loginBtn {
         margin-top: 10px;
-      }
-      
-      span {
         width: 100%;
-      }
-
-  }
+    }
+}
   
-  
-  /* Responsive design */
-  @media (max-width: 768px) {
+/* Responsive design */
+@media (max-width: 768px) {
     .loginPage {
-      flex-direction: column;
-      height: auto;
+        flex-direction: column;
+        height: auto;
     }
     
     .leftArea {
-      padding: 30px;
+        padding: 30px;
     }
     
     .rightArea {
-      padding: 30px;
+        padding: 30px;
     }
-  }
+}
 
 /* ---------------------------------- */
 // Navbar Styles
 
 .navbar {
     width: 100%;
-    max-height: 75px;
+    max-height: 53px;
     background-color: $backgroundColor;
     color: $textColor;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px $paddingContainer;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0 $paddingContainer;
+    border-bottom: 1px solid $borderColor;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -301,14 +296,14 @@ html, body {
         &::before {
             content: "";
             display: inline-block;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             margin-right: 10px;
             background-color: $primaryColor;
-            mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.392.106-.803.162-1.227.162-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.595 1.25-3.604 1.995-5.786 1.995-.376 0-.747-.022-1.112-.065 2.062 1.323 4.51 2.093 7.14 2.093 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z"/></svg>');
+            background-image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z'/></svg>";
             mask-repeat: no-repeat;
             mask-position: center;
-            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.392.106-.803.162-1.227.162-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.595 1.25-3.604 1.995-5.786 1.995-.376 0-.747-.022-1.112-.065 2.062 1.323 4.51 2.093 7.14 2.093 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z"/></svg>');
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>');
             -webkit-mask-repeat: no-repeat;
             -webkit-mask-position: center;
         }
@@ -317,31 +312,36 @@ html, body {
     div {
         display: flex;
         align-items: center;
+        height: 100%;
 
         a {
             color: $textColor;
-            margin: 0 $marginElement;
+            margin: 0;
             text-decoration: none;
-            font-size: 1rem;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.2s ease;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 16px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
+            transition: all 0.2s ease;
 
             &:hover {
-                color: $primaryColor;
-                background-color: rgba(108, 92, 231, 0.1);
+                background-color: rgba(239, 243, 244, 0.1);
+                color: $white;
                 text-decoration: none;
             }
             
             &.active {
                 font-weight: 700;
-                color: $primaryColor;
+                color: $textColor;
                 
                 &::after {
                     content: "";
                     position: absolute;
-                    bottom: -8px;
+                    bottom: 0;
                     left: 50%;
                     transform: translateX(-50%);
                     width: 4px;
@@ -354,21 +354,20 @@ html, body {
     }
     
     @media (max-width: 640px) {
-        padding: 12px 15px;
+        padding: 0 10px;
         
         h1 {
             font-size: 1.1rem;
             
             &::before {
-                width: 24px;
-                height: 24px;
+                width: 20px;
+                height: 20px;
             }
         }
         
         div a {
-            padding: 6px 10px;
-            font-size: 0.9rem;
-            margin: 0 8px;
+            padding: 16px 8px;
+            font-size: 14px;
         }
     }
 }
@@ -377,19 +376,21 @@ html, body {
     display: flex;
     align-items: center;
     margin-left: auto;
-    margin-right: 20px;
+    margin-right: 16px;
 
     .searchInput {
         padding: 8px 12px;
-        border-radius: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 9999px;
+        border: 1px solid transparent;
         background-color: $inputBackground;
         color: $textColor;
         margin-right: 10px;
+        width: 240px;
 
         &:focus {
             outline: none;
-            box-shadow: 0 0 0 2px $primaryColor;
+            border-color: $primaryColor;
+            background-color: $backgroundColor;
         }
 
         &::placeholder {
@@ -399,45 +400,41 @@ html, body {
 
     .searchType {
         padding: 8px 12px;
-        border-radius: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        border: 1px solid $borderColor;
         background-color: $inputBackground;
         color: $textColor;
         margin-right: 10px;
 
         &:focus {
             outline: none;
-            box-shadow: 0 0 0 2px $primaryColor;
+            border-color: $primaryColor;
         }
     }
 
     .searchButton {
         background-color: $primaryColor;
         border: none;
-        border-radius: 20px;
+        border-radius: 9999px;
         padding: 8px 16px;
         color: white;
         cursor: pointer;
         transition: all 0.2s ease;
+        font-weight: 600;
 
         &:hover {
             background-color: $hoverColor;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
         }
     }
 }
 
 .searchResults {
     position: absolute;
-    top: 60px;
+    top: 53px;
     right: 20px;
     background-color: $backgroundColor;
-    border-radius: 10px;
+    border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    max-height: 300px;
-    overflow-y: auto;
-    z-index: 1000;
 
     .searchResultItem {
         padding: 10px;

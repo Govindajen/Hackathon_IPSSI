@@ -66,7 +66,7 @@ function CommentsModal({ comments, postId, isModalOpen, setIsModalOpen }) {
                     Commentaires
                 </ModalHeader>
 
-                <ModalBody className="comments-modal-body">
+                <ModalBody className="comments-modal-body x-like-style">
                     {comments.length > 0 ? (
                         <ul className="comments-list">
                             {comments.map((comment, index) => {

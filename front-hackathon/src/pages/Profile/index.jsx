@@ -169,7 +169,12 @@ return (
                                     func={handleModal}
                                 />
 
-                                <div className="profileActions">
+                               <div className="profileActions">
+                                    {userProfile && userProfile._id === user.id && (
+                                        <button className="editProfileButton" onClick={() => navigate(`/profile/${user.id}`)}>
+                                            Modifier Profil
+                                        </button>
+                                    )}
                                     {userProfile && userProfile._id !== user.id && (
                                         <button 
                                             onClick={handleFollow} 

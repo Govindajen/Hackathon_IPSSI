@@ -22,7 +22,7 @@ export default function NotifDropdown () {
         <p className='notificationIconBtn'><FontAwesomeIcon icon={faBell} /> </p>            
         </DropdownToggle>
 
-        <DropdownMenu className="dropdown-menu dropdown-menu-lg p-0 dropdown-menu-end">
+        <DropdownMenu className="dropdown-menu dropdown-menu-lg p-0 dropdown-menu-end x-like-style">
                 <DropdownItem>
                     Some Action
                 </DropdownItem>

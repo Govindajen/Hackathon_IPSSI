@@ -5,6 +5,7 @@ import Authentication from "./pages/Authentication";
 import Legal from "./pages/Legal/"; 
 import Terms from "./pages/Terms";
 import ProtectedRoutes from "./components/ProtectedRoutes";
+import EditProfile from "./pages/Profile/editProfile";
 
 const App = () => {
   return (
@@ -29,6 +30,11 @@ const App = () => {
         <Route path="/profil/:userId" element={
           <ProtectedRoutes>
             <Profile />
+          </ProtectedRoutes>
+          } />
+        <Route path="/profile/:id" element={
+          <ProtectedRoutes>
+            <EditProfile />
           </ProtectedRoutes>
           } />
         <Route path="/legal" element={<Legal />} /> 
