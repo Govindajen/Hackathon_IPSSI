@@ -172,21 +172,23 @@ export default function Profile() {
                                 </div>
                                 </> : null
                             }
-                            
+                            <div className="profileActions"></div>
                             <div className="profileDetails">
                                 <div className="detailItem">
                                     <FontAwesomeIcon icon={faUser} className="detailIcon" />
                                     <span>Nom d'utilisateur: {userProfile?.username}</span>
                                 </div>
-                                
                                 <div className="detailItem">
                                     <FontAwesomeIcon icon={faEnvelope} className="detailIcon" />
                                     <span>Email: {userProfile?.email}</span>
                                 </div>
-                                
                                 <div className="detailItem">
                                     <FontAwesomeIcon icon={faCalendarAlt} className="detailIcon" />
                                     <span>Date d'inscription: {userProfile ? new Date(userProfile.createdAt).toLocaleDateString() : "Chargement..."}</span>
+                                </div>
+                                <div className="buttonsContainer">
+                                    <button className="legalButton" onClick={() => navigate('/legal')}>Mentions Légales</button>
+                                    <button className="termsButton" onClick={() => navigate('/terms')}>Condition générales d'utilisations</button>
                                 </div>
                             </div>
                         </div>
