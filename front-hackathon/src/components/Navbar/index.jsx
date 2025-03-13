@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import NotifDropdown from "./Notif";
+import NotifDropdown from "./NotificationDropdown";
 import myAxios from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Dropdown } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBell } from '@fortawesome/free-solid-svg-icons'
 
 
 const Navbar = () => {

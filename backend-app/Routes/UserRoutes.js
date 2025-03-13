@@ -36,27 +36,33 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body
+    const { username, password } = req.body
     try {
-        const user = await User.findOne({ username })
+        const user = await User.findOne({ username }).populate({
+            path: "emotions",
+            populate: {
+            path: "post",
+            }
+        });
         if (!user) {
-            return res.status(404).json({ message: "Utilisateur non trouvé" })
+            return res.status(404).json({ message: "Utilisateur non trouvé" });
         }
-        const isMatch = await bcrypt.compare(password, user.password)
+        const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(401).json({ message: "Mot de passe incorrect" })
+            return res.status(401).json({ message: "Mot de passe incorrect" });
         }
         const payload = {
             id: user._id,
             username: user.username,
             email: user.email,
-        }
-        const token = jwt.sign(payload, process.env.JWT_SECRET, {
+            emotions: user.emotions
+        };
+        const token = jwt.sign(payload, process.env.JWT_SECRET || 'default_secret', {
             expiresIn: "7d",
-        })
-        res.json({ user: payload, token })
+        });
+        res.json({ user: payload, token });
     } catch (error) {
-        res.status(500).json({ message: "Erreur serveur" })
+        res.status(500).json({ message: "Erreur serveur" });
     }
 });
 

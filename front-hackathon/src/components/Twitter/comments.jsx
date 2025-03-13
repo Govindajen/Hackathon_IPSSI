@@ -13,7 +13,6 @@ function CommentsModal({ comments, postId, isModalOpen, setIsModalOpen }) {
     const user = useSelector((state) => state.auth.user);
     const dispatch = useDispatch();
 
-
     const toggle = () => {
         setIsModalOpen(!isModalOpen);
         setNewComment('');
@@ -23,36 +22,60 @@ function CommentsModal({ comments, postId, isModalOpen, setIsModalOpen }) {
         setNewComment(e.target.value);
     };
 
-    const handleAddComment = () => {
+    const handleCreateNotification = async (postOwnerId) => {
+        try {
+            if (postOwnerId !== user.user.id) {
+                const notificationData = {
+                    content: `${user.user.username} a commenté votre post`,
+                    type: "comment",
+                    sendby: user.user.id,
+                    sendfor: postOwnerId,
+                };
+                
+                const response = await myAxios.post('/notifs', notificationData);
+                console.log('Notification created:', response.data);
+            }
+        } catch (error) {
+            console.error('Error creating notification:', error);
+        }
+    };
+
+    const handleAddComment = async () => {
         if(newComment === '') return;
 
-        myAxios.post(`/tweets/commentaire/${postId}`, {
-            comment: {
-                userId: user.user.id,
-                content: newComment,
-            }
-        })
-        .then((response) => {
-            console.log('Comment added:', response.data);
-            if (response.status === 201) {
+        try {
+            const commentResponse = await myAxios.post(`/tweets/commentaire/${postId}`, {
+                comment: {
+                    userId: user.user.id,
+                    content: newComment,
+                }
+            });
+            
+            if (commentResponse.status === 201) {
+                const postResponse = await myAxios.get(`/tweets/${postId}`);
+                const postOwnerId = postResponse.data.user._id;
+                
+                await handleCreateNotification(postOwnerId);
+                
                 dispatch(fetchPosts());
                 setNewComment('');
             }
-        })
-        .catch((error) => {
-            // Handle error
-            console.error('Error adding comment:', error);
-        });
+        } catch (error) {
+            console.error('Error adding comment or creating notification:', error);
+        }
     };
 
     const handleDelete = async (commentId) => {
-        const response = await myAxios.delete(`/tweets/commentaire/${postId}/${commentId}`);
-        console.log(response)
-
-        if (response.status === 200) {
-            dispatch(fetchPosts());
+        try {
+            const response = await myAxios.delete(`/tweets/commentaire/${postId}/${commentId}`);
+            
+            if (response.status === 200) {
+                dispatch(fetchPosts());
+            }
+        } catch (error) {
+            console.error('Error deleting comment:', error);
         }
-    }
+    };
 
     return (
         <div className="comments-modal-container">
