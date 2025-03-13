@@ -12,26 +12,29 @@ import { useNavigate } from "react-router-dom";
 import CommentsModal from "./comments";
 import myAxios from "../../utils/axios";
 import { fetchPosts } from "../../redux/slices/postsSlice";
+import { useState } from "react";
 
-export default function Post({ post, retweetsFunction }) {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user.user);
-  const users = useSelector((state) => state.auth.users);
-  const navigate = useNavigate();
+
+export default function Post ({keyD, post, retweetsFunction}) {
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.auth.user.user)
+    const users = useSelector(state => state.auth.users)
+    const navigate = useNavigate();
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Vérification et récupération du créateur du tweet
   const postCreatedBy = post.user && users.find((u) => u._id === post.user._id);
 
-  const handleLike = async () => {
-    try {
-      const response = await myAxios.put(`/tweets/${post._id}/like`, {
-        userId: user.id,
-      });
-      if (response.status === 200) {
-        dispatch(fetchPosts());
-      }
-    } catch (error) {
-      console.error("Erreur lors du like :", error);
+    const handleLike = async () => {
+        //dispatch(likePost({ id: post._id, userId: user.id, unlike: post.likes.includes(user.id) }));
+
+        const response = await myAxios.put(`/tweets/${post._id}/like`, { userId: user.id} );
+
+        if (response.status === 200) {
+            dispatch(fetchPosts());
+        }
+        
     }
   };
 
@@ -43,6 +46,7 @@ export default function Post({ post, retweetsFunction }) {
       }
     } catch (error) {
       console.error("Erreur lors de la suppression :", error);
+
     }
   };
 
@@ -87,7 +91,7 @@ export default function Post({ post, retweetsFunction }) {
           <FontAwesomeIcon icon={faArrowsSpin} />{" "}
           {post.retweets ? post.retweets.length : 0}
         </p>
-        <CommentsModal />
+        <CommentsModal comments={post.commentaire} postId={post._id} setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}/>
         <p>
           <FontAwesomeIcon icon={faBookmark} /> {post.signet || 0}
         </p>
@@ -100,6 +104,7 @@ export default function Post({ post, retweetsFunction }) {
           {post.retweets.content && (
             <div className="content">
               <p>{post.retweets.content}</p>
+
             </div>
           )}
           {post.retweets.hashtags && (
