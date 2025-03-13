@@ -89,10 +89,27 @@ $border-radius: 12px;
 }
 
 .profileDetails {
+    position: relative; // To position the buttons inside this div
     display: flex;
     flex-direction: column;
     gap: 15px;
     margin-top: 20px;
+
+    .detailItem {
+        display: flex;
+        align-items: center;
+        font-size: 1.1rem;
+        color: #333;
+    }
+
+    .buttonsContainer {
+        display: flex;
+        justify-content: flex-end; // Align buttons to the right
+        gap: 10px; // Space between buttons
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+    }
 }
 
 .detailItem {
@@ -148,8 +165,6 @@ $border-radius: 12px;
     color: #e0245e;
 }
 
-
-
 .bioContainer {
     width: 100%;
     display: flex;
@@ -162,7 +177,6 @@ $border-radius: 12px;
         justify-content: center;
         margin: 0.5em;
     }
-
 
     .nameContainer {
         display: flex;
@@ -199,8 +213,6 @@ $border-radius: 12px;
         }
     }
 }
-
-
 
 // Modal styling
 .modal-content {
@@ -356,6 +368,19 @@ $border-radius: 12px;
     &:hover {
         background-color: $primary-color;
     }
+}
+
+.legalButton, .termsButton {
+    background-color: $primary-color;
+    color: $white;
+    border: none;
+    border-radius: 30px;
+    padding: 5px 10px; // Smaller padding
+    font-size: 0.8rem; // Smaller font size
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+
 }
 
 .bookmarksContainer {

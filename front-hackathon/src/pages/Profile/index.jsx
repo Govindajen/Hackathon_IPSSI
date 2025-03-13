@@ -197,6 +197,10 @@ return (
                                 <FontAwesomeIcon icon={faCalendarAlt} className="detailIcon" />
                                 <span>Date d'inscription: {userProfile ? new Date(userProfile.createdAt).toLocaleDateString() : "Chargement..."}</span>
                             </div>
+                            <div className="buttonsContainer">
+                                    <button className="legalButton" onClick={() => navigate('/legal')}>Mentions Légales</button>
+                                    <button className="termsButton" onClick={() => navigate('/terms')}>Condition générales d'utilisations</button>
+                                </div>
                         </div>
                     </div>
                 </div>

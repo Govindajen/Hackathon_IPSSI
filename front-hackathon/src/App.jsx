@@ -2,15 +2,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Authentication from "./pages/Authentication";
-
+import Legal from "./pages/Legal/"; 
+import Terms from "./pages/Terms";
 import ProtectedRoutes from "./components/ProtectedRoutes";
-
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Authentication />} />
+        <Route path="/login" element={<Authentication />} />Z
         <Route path="/" element={
           <ProtectedRoutes>
             <Home />
@@ -31,6 +31,8 @@ const App = () => {
             <Profile />
           </ProtectedRoutes>
           } />
+        <Route path="/legal" element={<Legal />} /> 
+        <Route path="/terms" element={<Terms />} /> 
       </Routes>
     </Router>
   );
