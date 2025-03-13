@@ -5,7 +5,6 @@ import { faBell } from "@fortawesome/free-solid-svg-icons";
 export default function Notification ({notif}) {
 
     const { content, type, sendby, sendfor, date } = notif;
-    console.log(notif);
 
     return (
         <>
