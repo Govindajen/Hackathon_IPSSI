@@ -91,6 +91,25 @@ export default function Home() {
     setPostContent({ ...postContent, content: value });
   };
 
+  const handleCreateNotification = async (postOwnerId, type) => {
+    try {
+    if (postOwnerId !== user.id) {
+      const notificationData = {
+      content: `${user.username} a commenté votre post`,
+      type: type,
+      sendby: user.id,
+      sendfor: postOwnerId,
+      };
+      
+      const response = await myAxios.post('/notifs', notificationData);
+      console.log('Notification created:', response.data);
+    }
+    } catch (error) {
+    console.error('Error creating notification:', error);
+    }
+  };
+
+
   const handlePostSubmit = async () => {
     // On vérifie qu'il y a du texte ou une image
     if (postContent.content === "" && !postContent.file) {
@@ -114,7 +133,7 @@ export default function Home() {
     }
 
     const tweet = {
-      content: postContent.content.trim(), // Peut être vide
+      content: postContent.content.replace(/#[a-z0-9_]+/gi, '').trim(),
       user: user.id,
       retweets: null,
       hashtags:
@@ -125,6 +144,7 @@ export default function Home() {
     };
 
     dispatch(createPost(tweet));
+    handleCreateNotification(tweet.user, "post");
     setPostContent({ content: "", file: null });
   };
 
@@ -144,8 +164,10 @@ export default function Home() {
     };
 
     dispatch(repost(tweet));
+    handleCreateNotification(reTweet.tweet.user.id, "repost");
     setReTweet({ content: "", tweet: {} });
   };
+
 
   const startCamera = () => {
     navigator.mediaDevices.getUserMedia({ video: true })
