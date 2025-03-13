@@ -144,7 +144,7 @@ return (
                 <div className="profileCard">
                     <div className="profileAvatar">
                         <img 
-                            src="https://images.itnewsinfo.com/lmi/articles/grande/000000090076.jpg" 
+                            src="src\assets\img\image.png" 
                             alt="Avatar de profil" 
                             className="avatarImage"
                         />

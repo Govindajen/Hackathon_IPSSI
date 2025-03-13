@@ -14,6 +14,8 @@ import myAxios from "../../utils/axios";
 import { fetchPosts } from "../../redux/slices/postsSlice";
 import { useState } from "react";
 
+
+
 export default function Post({ keyD, post, retweetsFunction, detectEmotion }) {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.user.user);
@@ -114,7 +116,7 @@ export default function Post({ keyD, post, retweetsFunction, detectEmotion }) {
                     <FontAwesomeIcon icon={faBookmark} style={{ color: post.signet.includes(user.id) ? 'gold' : '#e1e8ed' }} /> 
                     {post.signet.length}
                 </p>
-                <button onClick={() => {handleDetectEmotion(post._id)}}>Caméra</button>
+                <button className="btn-camera" onClick={() => {handleDetectEmotion(post._id)}}>Caméra</button>
             </div>
             {post.retweets && (
                 <div className="post retweet">
