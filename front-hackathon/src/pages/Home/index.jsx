@@ -1,99 +1,113 @@
-import { useDispatch, useSelector } from "react-redux"
+// pages/Home/index.jsx
+import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-
 import { fetchUsers, logout } from "../../redux/slices/authSlice";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { createPost, fetchPosts, repost } from "../../redux/slices/postsSlice";
 import { useNavigate } from "react-router-dom";
-
-import Layout from "../../components/Layout"
+import Layout from "../../components/Layout";
 import Post from "../../components/Twitter";
+import myAxios from "../../utils/axios";
 
 export default function Home() {
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const user = useSelector(state => state.auth.user.user)
-    const posts = useSelector(state => state.posts.posts)
+  const user = useSelector((state) => state.auth.user.user);
+  const posts = useSelector((state) => state.posts.posts);
 
-    const [postTemp, setPostTemp] = useState(posts);
+  const [postTemp, setPostTemp] = useState(posts);
+  useEffect(() => {
+    setPostTemp(posts);
+  }, [posts]);
 
-    useEffect(() => {
-        setPostTemp(posts);
-    }, [posts]);
+  // State pour le tweet incluant texte et fichier image
+  const [postContent, setPostContent] = useState({
+    content: "",
+    file: null,
+  });
 
+  const [reTweet, setReTweet] = useState({
+    content: "",
+    tweet: {},
+  });
 
-    const [postContent, setPostContent] = useState({
-        content: "",
+  function handleRetweet(tweet) {
+    setReTweet({
+      content: "",
+      tweet: tweet,
     });
+  }
 
-    const [reTweet, setReTweet] = useState({
-        content: '',
-        tweet: {},
-    });
+  useEffect(() => {
+    dispatch(fetchPosts());
+    dispatch(fetchUsers());
+  }, [dispatch]);
 
-    function handleRetweet(tweet) {
-        setReTweet({
-            content: "",
-            tweet: tweet,
-        });
+  const postsJsx = [...postTemp].reverse().map((post) => (
+    <Post key={post._id} post={post} retweetsFunction={handleRetweet} />
+  ));
+
+  const handlePostChange = (value) => {
+    setPostContent({ ...postContent, content: value });
+  };
+
+  const handlePostSubmit = async () => {
+    // On vérifie qu'il y a du texte ou une image
+    if (postContent.content === "" && !postContent.file) {
+      return;
     }
 
-    useEffect(() => {
-        dispatch(fetchPosts());
-        dispatch(fetchUsers());
-    }, [dispatch])
-
-    const postsJsx = [...postTemp].reverse().map(post => {
-        return (
-            <Post key={post._id} post={post} retweetsFunction={handleRetweet}/>
-        )
-    })
-
-    /* ------------------------------------------------------ */
-
-    const handlePostChange = (e) => {
-        setPostContent({...postContent, content: e});
-    };
-    
-    const handlePostSubmit = () => {
-        if (postContent.content === "") {
-            return;
-        }
-
-        const post = {
-            content: postContent.content.replace(/#[a-z0-9_]+/gi, '').trim(),
-            user: user.id,
-            retweets: null,
-            hashtags: (postContent.content.match(/#[a-z0-9_]+/gi) || []).map(tag => tag.slice(1)),
-        };
-
-        dispatch(createPost(post));
-        setPostContent({
-            content: "",
+    let mediaUrl = null;
+    // Si un fichier image est sélectionné, on l'upload
+    if (postContent.file) {
+      const formData = new FormData();
+      formData.append("file", postContent.file);
+      try {
+        const uploadResponse = await myAxios.post("/upload", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
         });
+        mediaUrl = uploadResponse.data.url;
+      } catch (error) {
+        console.error("Erreur d'upload:", error);
+        return;
+      }
+    }
+
+    const tweet = {
+      content: postContent.content.trim(), // Peut être vide
+      user: user.id,
+      retweets: null,
+      hashtags:
+        (postContent.content.match(/#[a-z0-9_]+/gi) || []).map((tag) =>
+          tag.slice(1)
+        ),
+      media: mediaUrl,
     };
 
-    const handleRepostSubmit = () => {
-        if (reTweet.content === "") {
-            return;
-        }
+    dispatch(createPost(tweet));
+    setPostContent({ content: "", file: null });
+  };
 
-        const post = {
-            content: reTweet.content.replace(/#[a-z0-9_]+/gi, '').trim(),
-            user: user.id,
-            retweets: reTweet.tweet._id,
-            hashtags: (reTweet.content.match(/#[a-z0-9_]+/gi) || []).map(tag => tag.slice(1)),
-        };
+  const handleRepostSubmit = () => {
+    if (reTweet.content === "") {
+      return;
+    }
 
-        dispatch(repost(post));
-        setReTweet({
-            content: "",
-            tweet: {},
-        });
+    const tweet = {
+      content: reTweet.content.replace(/#[a-z0-9_]+/gi, "").trim(),
+      user: user.id,
+      retweets: reTweet.tweet._id,
+      hashtags:
+        (reTweet.content.match(/#[a-z0-9_]+/gi) || []).map((tag) =>
+          tag.slice(1)
+        ),
     };
 
+
+    dispatch(repost(tweet));
+    setReTweet({ content: "", tweet: {} });
     return (
         <Layout>
             <div className="homeContainer">
@@ -194,10 +208,73 @@ export default function Home() {
                     <div className="postsContainer">
                         {postsJsx?.length ? postsJsx : <p className="noPosts">No posts yet.</p>}
                     </div>
-                </div>
 
-                <div className="splitContainer"></div>
+                </div>
+              </div>
+              <div className="newPostContainer">
+                <textarea
+                  value={reTweet.content}
+                  onChange={(e) =>
+                    setReTweet({
+                      ...reTweet,
+                      content: e.target.value.slice(0, 256),
+                    })
+                  }
+                  placeholder="Add a comment..."
+                  className="postInput retweetComment"
+                  maxLength="256"
+                  aria-label="Add a comment to your retweet"
+                />
+                <span className="retweetButtons">
+                  <button
+                    onClick={() => setReTweet({ content: "", tweet: {} })}
+                    className="postButton"
+                  >
+                    Annuler
+                  </button>
+                  <button onClick={handleRepostSubmit} className="postButton">
+                    Reposter
+                  </button>
+                </span>
+              </div>
             </div>
-        </Layout>
-    )
+          ) : (
+            <div className="newPostContainer">
+              <textarea
+                value={postContent.content}
+                onChange={(e) =>
+                  handlePostChange(e.target.value.slice(0, 256))
+                }
+                placeholder="What's happening?"
+                className="postInput"
+                maxLength="256"
+                aria-label="Write a new post"
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) =>
+                  setPostContent({
+                    ...postContent,
+                    file: e.target.files[0],
+                  })
+                }
+              />
+              <button onClick={handlePostSubmit} className="postButton">
+                Post
+              </button>
+            </div>
+          )}
+
+          <hr />
+
+          <div className="postsContainer">
+            {postsJsx?.length ? postsJsx : <p className="noPosts">No posts yet.</p>}
+          </div>
+        </div>
+
+        <div className="splitContainer"></div>
+      </div>
+    </Layout>
+  );
 }
