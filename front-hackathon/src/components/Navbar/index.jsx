@@ -15,10 +15,10 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [notifications, setNotifications] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [searchType, setSearchType] = useState("tweets");
+  const posts = useSelector((state) => state.posts.posts);
 
   const handleSearch = async () => {
     try {
@@ -36,7 +36,7 @@ const Navbar = () => {
 
   useEffect(() => {
     dispatch(fetchNotifications());
-  }, []);
+  }, [posts, posts.length]);
 
 
   return (

@@ -138,6 +138,33 @@ body {
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
         padding: $paddingElement !important;
         border: 1px solid $borderColor !important;
+        height: auto !important;
+    }
+
+    .notificationItem {
+      padding: $paddingElement;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.2s ease;
+      border-radius: 10px;
+
+      &:hover {
+        background-color: rgba(239, 243, 244, 0.1);
+      }
+
+      .content {
+        color: $textColor;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        word-wrap: break-word;
+      }
+    }
+    .notificationBell {
+      margin-right: 12px;
+      color: $textColor;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
     }
 
     .dropdown-item {
