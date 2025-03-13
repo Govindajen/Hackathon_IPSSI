@@ -214,131 +214,141 @@ $border-radius: 12px;
     }
 }
 
+$border-radius: 12px;
+$primary-color: #1da1f2;
+$secondary-color: #657786;
+$borderColor: #e1e8ed;
+$hoverColor: #f5f8fa;
+$textColor: #14171a;
+$white: #ffffff;
+$modalShadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+
 // Modal styling
 .modal-content {
-  border: none;
-  border-radius: $border-radius;
-  box-shadow: $modal-shadow;
-  max-width: 400px;
-  margin: 0 auto;
-  
-  .follow-modal-header {
-    padding: 15px 20px;
-    border-bottom: 1px solid $border-color;
+    border: none !important;
+    border-radius: $border-radius !important;
+    box-shadow: $modal-shadow !important;
+    max-width: 400px !important;
+    margin: 0 auto !important;
     
-    .modal-title {
-      font-weight: bold;
-      font-size: 1.2rem;
-      color: $text-color;
-      margin: 0;
-    }
-    
-    .btn-close {
-      opacity: 0.6;
-      transition: opacity 0.2s;
-      
-      &:hover {
-        opacity: 1;
-      }
-    }
-  }
-  
-  .follow-modal-body {
-    padding: 0;
-    
-    .follow-tabs {
-      display: flex;
-      border-bottom: 1px solid $border-color;
-      
-      .nav-item {
-        flex: 1;
-        text-align: center;
+    .follow-modal-header {
+        padding: 15px 20px !important;
+        border-bottom: 1px solid $border-color !important;
         
-        .nav-link {
-          padding: 15px 0;
-          font-weight: 600;
-          color: $secondary-color;
-          border: none;
-          border-radius: 0;
-          cursor: pointer;
-          transition: all 0.2s;
-          
-          &:hover {
-            background-color: $hover-color;
-            color: $primary-color;
-          }
-          
-          &.active {
-            color: $primary-color;
-            border-bottom: 2px solid $primary-color;
-            background-color: transparent;
-          }
+        .modal-title {
+            font-weight: bold !important;
+            font-size: 1.2rem !important;
+            color: $text-color !important;
+            margin: 0 !important;
         }
-      }
-    }
-    
-    .follow-list-container {
-      max-height: 300px;
-      overflow-y: auto;
-      
-      .follow-list {
-        list-style: none;
-        margin: 0;
-        padding: 0;
         
-        .follow-item {
-          padding: 15px 20px;
-          border-bottom: 1px solid $border-color;
-          font-size: 0.95rem;
-          color: $text-color;
-          display: flex;
-          align-items: center;
-          transition: background-color 0.2s;
-          
-          &:hover {
-            background-color: $hover-color;
-          }
-          
-          &:last-child {
-            border-bottom: none;
-          }
-          
-          &::before {
-            content: "";
-            display: inline-block;
-            width: 36px;
-            height: 36px;
-            background-color: $secondary-color;
-            border-radius: 50%;
-            margin-right: 12px;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
-            background-size: 60%;
-            background-position: center;
-            background-repeat: no-repeat;
-          }
+        .btn-close {
+            opacity: 0.6 !important;
+            transition: opacity 0.2s !important;
+            
+            &:hover {
+                opacity: 1 !important;
+            }
         }
-      }
     }
-  }
-  
-  .modal-footer {
-    padding: 12px 20px;
-    border-top: 1px solid $border-color;
     
-    .close-button {
-      background-color: transparent;
-      color: $primary-color;
-      border: 1px solid $primary-color;
-      border-radius: 20px;
-      padding: 6px 15px;
-      font-weight: 600;
-      transition: all 0.2s;
-      
-      &:hover {
-        background-color: rgba($primary-color, 0.1);
-      }
+    .follow-modal-body {
+        padding: 0 !important;
+        
+        .follow-tabs {
+            display: flex !important;
+            border-bottom: 1px solid $border-color !important;
+            
+            .nav-item {
+                flex: 1 !important;
+                text-align: center !important;
+                
+                .nav-link {
+                    padding: 15px 0 !important;
+                    font-weight: 600 !important;
+                    color: $secondary-color !important;
+                    border: none !important;
+                    border-radius: 0 !important;
+                    cursor: pointer !important;
+                    transition: all 0.2s !important;
+                    
+                    &:hover {
+                        background-color: $hover-color !important;
+                        color: $primary-color !important;
+                    }
+                    
+                    &.active {
+                        color: $primary-color !important;
+                        border-bottom: 2px solid $primary-color !important;
+                        background-color: transparent !important;
+                    }
+                }
+            }
+        }
+        
+        .follow-list-container {
+            max-height: 300px !important;
+            overflow-y: auto !important;
+            
+            .follow-list {
+                list-style: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                
+                .follow-item {
+                    padding: 15px 20px !important;
+                    border-bottom: 1px solid $border-color !important;
+                    font-size: 0.95rem !important;
+                    display: flex !important;
+                    color: black !important;
+                    align-items: center !important;
+                    transition: background-color 0.2s !important;
+                    
+                    &:hover {
+                        background-color: $hover-color !important;
+                    }
+                    
+                    &:last-child {
+                        border-bottom: none !important;
+                    }
+                    
+                    &::before {
+                        content: "" !important;
+                        display: inline-block !important;
+                        width: 36px !important;
+                        height: 36px !important;
+                        background-color: $secondary-color !important;
+                        border-radius: 50% !important;
+                        margin-right: 12px !important;
+                        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>') !important;
+                        background-size: 60% !important;
+                        background-position: center !important;
+                        background-repeat: no-repeat !important;
+                    }
+                }
+            }
+        }
     }
-  }
+    
+    .modal-footer {
+        padding: 12px 20px !important;
+        border-top: 1px solid $border-color !important;
+        
+        .close-button {
+            background-color: transparent !important;
+            color: $primary-color !important;
+            border: 1px solid $primary-color !important;
+            border-radius: 20px !important;
+            padding: 6px 15px !important;
+            font-weight: 600 !important;
+            transition: all 0.2s !important;
+            
+            &:hover {
+                background-color: rgba($primary-color, 0.1) !important;
+            }
+        }
+    }
 }
 
 // Scrollbar styling
