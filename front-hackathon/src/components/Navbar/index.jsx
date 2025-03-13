@@ -58,6 +58,7 @@ const Navbar = () => {
         </select>
         <button className="searchButton" onClick={handleSearch}>Chercher</button>
       </div>
+        <NotifDropdown />
       <div className="searchResults">
         {searchResults.map((result, index) => (
           <div key={index} className="searchResultItem">
