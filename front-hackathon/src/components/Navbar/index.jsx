@@ -29,12 +29,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <img
-        src="src\assets\img\image.png"
-        alt="Site Logo"
-        onClick={() => {navigate('/home')}}
-        style={{ cursor: "pointer", height: "40px" }}
-      />
+      <h2 className="logo-text" onClick={() => navigate("/")}>SmartTweet</h2>
       <div>
         <Link to="/" className="mx-2">Home</Link>
         <Link to="/profil" className="mx-2">Profil</Link>

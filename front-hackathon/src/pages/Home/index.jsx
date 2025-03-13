@@ -164,7 +164,7 @@ export default function Home() {
           <div className="profileContainer">
             <img
               className="contentImage"
-              src="https://images.itnewsinfo.com/lmi/articles/grande/000000090076.jpg"
+              src="src\assets\img\image.png"
               alt="User profile"
             />
             <p className="username" onClick={() => {navigate(`/profil/${user.id}`);}}>
@@ -247,7 +247,7 @@ export default function Home() {
                 maxLength="256"
                 aria-label="Write a new post"
               />
-              <input
+              <input className="btn-upload"
                 type="file"
                 accept="image/*"
                 onChange={(e) =>
@@ -256,7 +256,7 @@ export default function Home() {
                     file: e.target.files[0],
                   })
                 }
-              />
+              /> <br></br>
               <button onClick={handlePostSubmit} className="postButton">
                 Post
               </button>
