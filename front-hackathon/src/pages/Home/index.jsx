@@ -27,7 +27,7 @@ export default function Home() {
 
 
   const [postTemp, setPostTemp] = useState(posts);
-  useEffect(() => {
+  useEffect(() => {/*  */
     setPostTemp(posts);
   }, [posts]);
 
