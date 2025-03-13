@@ -48,10 +48,10 @@ const Navbar = () => {
           onChange={(e) => setSearchType(e.target.value)}
         >
           <option value="tweets">Tweets</option>
-          <option value="users">Users</option>
+          <option value="users">Utilisateurs</option>
           <option value="hashtags">Hashtags</option>
         </select>
-        <button className="searchButton" onClick={handleSearch}>Search</button>
+        <button className="searchButton" onClick={handleSearch}>Chercher</button>
       </div>
       <div className="searchResults">
         {searchResults.map((result, index) => (

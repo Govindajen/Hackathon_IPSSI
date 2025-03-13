@@ -24,13 +24,20 @@ router.post("/", async (req, res) => {
 // Récupérer tous les tweets 
 router.get("/", async (req, res) => {
   try {
-    const tweets = await Tweet.find().populate("user", "username").populate({
+    const tweets = await Tweet.find().populate("user", "username")
+    .populate({
       path: "retweets",
       populate: {
       path: "user",
       select: "username"
       }
-    });
+    }).populate({
+      path: "commentaire",
+      populate: {
+      path: "userId",
+      select: "username"
+      }
+    })
     res.json(tweets);
   } catch (error) {
     console.error("Erreur lors de la récupération des tweets :", error); // Affiche l'erreur dans la console
@@ -122,11 +129,40 @@ router.put("/:id/like", async (req, res) => {
 });
 
 // Créer un commentaire
-router.post("/commentaire", async (req, res) => {
+router.post("/commentaire/:id", async (req, res) => {
   try {
-    const tweet = new Tweet(req.body);
-    const newTweet = await tweet.save();
-    res.status(201).json(newTweet);
+    const tweet = await Tweet.findById(req.params.id);
+    if (!tweet) {
+      return res.status(404).json({ message: "Tweet non trouvé" });
+    }
+    if (!tweet.commentaire) {
+      tweet.commentaire = [];
+    }
+    tweet.commentaire.push(req.body.comment);
+    const updatedTweet = await tweet.save();
+    const populatedTweet = await Tweet.findById(updatedTweet._id).populate("user", "username").populate({
+      path: "commentaire",
+      populate: {
+        path: "userId",
+        select: "username"
+      }
+    });
+    res.status(201).json(populatedTweet);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Supprimer un commentaire
+router.delete("/commentaire/:id/:commentId", async (req, res) => {
+  try {
+    const tweet = await Tweet.findById(req.params.id);
+    if (!tweet) {
+      return res.status(404).json({ message: "Tweet non trouvé" });
+    }
+    tweet.commentaire = tweet.commentaire.filter(comment => comment._id.toString() !== req.params.commentId);
+    const updatedTweet = await tweet.save();
+    res.status(200).json({delete: true, updatedTweet});
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

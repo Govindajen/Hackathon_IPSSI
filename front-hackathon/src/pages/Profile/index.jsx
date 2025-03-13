@@ -26,8 +26,6 @@ export default function Profile() {
     const [followersDetails, setFollowersDetails] = useState([]);
     const [followingDetails, setFollowingDetails] = useState([]);
 
-    console.log(followersDetails, followingDetails)
-
     
     useEffect(() => {
         if (!isAuthenticated) {

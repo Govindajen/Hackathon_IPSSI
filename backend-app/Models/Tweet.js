@@ -6,7 +6,10 @@ const TweetSchema = new mongoose.Schema({
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
     retweets: { type: mongoose.Schema.Types.ObjectId, ref: "Tweet" },
     hashtags: [{ type: String, default: [] }],
-    commentaire: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tweet", default: [] }],
+    commentaire: [{
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+        content: { type: String, required: true }
+    }],
     signet: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tweet", default: [] }],
     date: { type: Date, default: Date.now },
 }, { timestamps: true });

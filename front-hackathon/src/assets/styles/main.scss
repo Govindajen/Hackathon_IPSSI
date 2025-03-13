@@ -1036,8 +1036,9 @@ body.dark-theme {
   // Modal styling
   .comments-modal {
     .modal-content {
-      width: 850px !important;
-      max-width: auto;
+      width: 100% !important;
+      max-width: 1080px !important;
+      margin: 0 !important;
       background-color: $backgroundColor;
       border-radius: $borderRadius;
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1080,6 +1081,18 @@ body.dark-theme {
         .comment-item {
           padding: 12px 0;
           border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          display: flex;
+          justify-content: space-between;
+
+          .delete {
+              color: rgba(255, 255, 255, 0.6);
+              cursor: pointer;
+              transition: color 0.2s ease;
+
+              &:hover {
+                color: $errorColor;
+              }
+          }
           
           &:last-child {
             border-bottom: none;
@@ -1147,6 +1160,7 @@ body.dark-theme {
 .add-comment-form {
     display: flex;
     align-items: center;
+    flex-direction: column;
     width: 100%;
     gap: 10px;
 
@@ -1159,6 +1173,8 @@ body.dark-theme {
         color: $textColor;
         resize: none;
         height: 50px;
+        width: 768px;
+        height: 72px;
 
         &:focus {
             outline: none;
@@ -1179,7 +1195,7 @@ body.dark-theme {
         color: white;
         cursor: pointer;
         transition: all 0.2s ease;
-
+        margin-left: auto;
         &:hover {
             background-color: $hoverColor;
             transform: translateY(-2px);
