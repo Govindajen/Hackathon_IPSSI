@@ -1,6 +1,6 @@
 // pages/Home/index.jsx
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { fetchUsers, logout } from "../../redux/slices/authSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
@@ -40,13 +40,51 @@ export default function Home() {
     });
   }
 
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+
+  const [currentEmotion, setCurrentEmotion] = useState({});
+
   useEffect(() => {
     dispatch(fetchPosts());
     dispatch(fetchUsers());
+    startCamera();
+    // Lancer la détection en continu toutes les 1 seconde pour afficher l'émotion en direct
+    // const interval = setInterval(async () => {
+    //   const emo = await detectEmotion();
+    //   setCurrentEmotion(emo);
+    // }, 1000);
+    // return () => clearInterval(interval);
   }, [dispatch]);
 
+  const detectEmotion = async () => {
+    const canvas = canvasRef.current;
+    const video = videoRef.current;
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const imageBase64 = canvas.toDataURL("image/jpeg").split(",")[1];
+
+    try {
+    //   console.log(imageBase64)
+      const res = await myAxios.post(`http://localhost:5000/api/detect-emotion`, { image: imageBase64 });
+      // On récupère l'émotion du premier visage détecté (s'il y en a)
+      if (res.data.results && res.data.results.length > 0) {
+        console.log(res.data.results[0].emotions || {})
+        return res.data.results[0].emotions || {};
+      }
+      return {};
+    } catch (err) {
+      console.error("Erreur détection émotion:", err);
+      return {};
+    }
+  };
+
   const postsJsx = [...postTemp].reverse().map((post) => (
-    <Post key={post._id} post={post} retweetsFunction={handleRetweet} />
+    <Post key={post._id} post={post} retweetsFunction={handleRetweet} detectEmotion={detectEmotion} />
   ));
 
   const handlePostChange = (value) => {
@@ -107,6 +145,16 @@ export default function Home() {
 
     dispatch(repost(tweet));
     setReTweet({ content: "", tweet: {} });
+  };
+
+  const startCamera = () => {
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then((stream) => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      })
+      .catch((err) => console.error("Erreur d'accès à la caméra:", err));
   };
 
   return (
@@ -224,6 +272,8 @@ export default function Home() {
 
         <div className="splitContainer"></div>
       </div>
+      <video ref={videoRef} style={{ display: 'none' }} autoPlay playsInline />
+    <canvas ref={canvasRef} style={{ display: 'none' }} />
     </Layout>
   );
 }
