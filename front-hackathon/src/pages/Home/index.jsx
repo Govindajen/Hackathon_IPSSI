@@ -10,12 +10,21 @@ import Layout from "../../components/Layout";
 import Post from "../../components/Twitter";
 import myAxios from "../../utils/axios";
 
+import { getUser } from "../../redux/slices/authSlice";
+
 export default function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.auth.user.user);
+  const userToken = useSelector((state) => state.auth.user.token);
   const posts = useSelector((state) => state.posts.posts);
+
+
+  function updateUserInformations () {
+    dispatch(getUser({userId: user.id,token:  userToken}));
+  }
+
 
   const [postTemp, setPostTemp] = useState(posts);
   useEffect(() => {

@@ -79,6 +79,27 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/updateUser/:id/:token", async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+      if (!user) {
+        return res.status(404).json({ message: "Utilisateur non trouvé" });
+      }
+  
+      const payload = {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          emotions: user.emotions
+      };
+  
+      res.json({ user: payload, token: req.params.token });
+    } catch (error) {
+      res.status(500).json({ message: "Erreur serveur" });
+    }
+  });
+
+
 //Récupérer un utilisateur
 router.get("/", async (req, res) => {
     try {

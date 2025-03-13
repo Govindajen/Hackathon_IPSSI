@@ -15,6 +15,20 @@ const login = createAsyncThunk(
 
         }
 )
+const getUser = createAsyncThunk(
+    "auth/getUser", 
+        async (value) => {
+            try {
+                const response = await myAxios.get(`/users/updateUser/${value.userId}/${value.token}`)
+                console.log(response.data)
+                return response.data;
+            } catch (error) {
+                error && console.error(error)
+                throw error;
+            }
+
+        }
+)
 const register = createAsyncThunk(
     "auth/register", 
         async (values) => {
@@ -99,12 +113,27 @@ const authSlice = createSlice({
             .addCase(fetchUsers.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message || "An error occurred";
-            });
+            })
+            
+            .addCase(getUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = action.payload;
+            })
+            .addCase(getUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || "An error occurred";
+            })
+            
+            ;
     }
 });
 
 export const { logout } = authSlice.actions;
 
-export { login, register, fetchUsers };
+export { login, register, fetchUsers, getUser };
 
 export default authSlice.reducer;
