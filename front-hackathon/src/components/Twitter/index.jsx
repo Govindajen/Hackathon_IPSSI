@@ -37,6 +37,14 @@ export default function Post ({keyD, post, retweetsFunction}) {
         }
     }
 
+    const handleBookmark = async () => {
+        const response = await myAxios.post(`/tweets/${post._id}/bookmark`, { userId: user.id });
+
+        if (response.status === 200) {
+            dispatch(fetchPosts());
+        }
+    }
+
     const handleUserClick = () => {
         navigate(`/profil/${post.user._id}`); // Navigate to the profile page with user ID
     }
@@ -66,7 +74,10 @@ export default function Post ({keyD, post, retweetsFunction}) {
                     {post.retweets ? post.retweets.length : 0}
                 </p>
                 <CommentsModal />
-                <p><FontAwesomeIcon icon={faBookmark} /> {post.signet}</p>
+                <p onClick={() => {handleBookmark()}}>
+                    <FontAwesomeIcon icon={faBookmark} style={{ color: post.signet.includes(user.id) ? 'gold' : '#e1e8ed' }} /> 
+                    {post.signet.length}
+                </p>
             </div>
             {
                 post.retweets ? 

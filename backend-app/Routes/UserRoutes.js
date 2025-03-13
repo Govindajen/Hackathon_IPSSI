@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../Models/User");
+const Tweet = require("../Models/Tweet");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
- 
- 
+
 router.post("/register", async (req, res) => {
   console.log(req.body)
     try {
@@ -34,8 +34,7 @@ router.post("/register", async (req, res) => {
         res.status(500).json({ message: "Erreur serveur", error})
     }
 });
- 
- 
+
 router.post("/login", async (req, res) => {
   const { username, password } = req.body
     try {
@@ -61,7 +60,6 @@ router.post("/login", async (req, res) => {
     }
 });
 
- 
 //Récupérer un utilisateur
 router.get("/:id", async (req, res) => {
   try {
@@ -84,7 +82,7 @@ router.get("/", async (req, res) => {
         res.status(500).json({ message: "Erreur serveur" });
     }
 });
- 
+
 //Supprimer un utilisateur
 router.delete("/:id", async (req, res) => {
   try {
@@ -140,7 +138,19 @@ router.post('/:id/unfollow', async (req, res) => {
     }
 });
 
-
-
+// Récupérer les signets d'un utilisateur
+router.get("/:id/bookmarks", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+    const bookmarks = await Tweet.find({ signet: user._id }).populate("user", "username").populate({ path: "retweets", populate: { path: "user", select: "username" } });
+    ;
+    res.json(bookmarks);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
+  }
+});
 
 module.exports = router;

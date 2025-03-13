@@ -357,3 +357,47 @@ $border-radius: 12px;
         background-color: $primary-color;
     }
 }
+
+.bookmarksContainer {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    h2 {
+        font-size: 1.5rem;
+        color: #1da1f2;
+        margin-bottom: 20px;
+    }
+
+    .bookmark {
+        padding: 15px;
+        border-bottom: 1px solid #e1e8ed;
+        margin-bottom: 10px;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        p {
+            margin: 0;
+            color: #14171a;
+            font-size: 1rem;
+            line-height: 1.5;
+
+            &:last-child {
+                color: #657786;
+                font-size: 0.9rem;
+                margin-top: 5px;
+            }
+        }
+    }
+
+    .noBookmarks {
+        text-align: center;
+        color: #657786;
+        font-size: 1rem;
+        padding: 20px 0;
+    }
+}

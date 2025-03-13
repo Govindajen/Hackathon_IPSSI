@@ -161,7 +161,7 @@ export default function Home() {
                                     onClick={() => setReTweet({ content: "", tweet: {} })} 
                                     className="postButton"
                                 >
-                                    Annuller
+                                    Annuler
                                 </button>
                                 <button 
                                     onClick={handleRepostSubmit} 

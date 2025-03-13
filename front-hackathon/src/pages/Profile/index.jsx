@@ -7,6 +7,7 @@ import Layout from "../../components/Layout";
 import myAxios from "../../utils/axios";
 import FollowModal from "./followModal";
 import { logout } from "../../redux/slices/authSlice";
+import { fetchBookmarks } from "../../redux/slices/postsSlice"; // Import fetchBookmarks
 import "./profile.scss";
 
 export default function Profile() {
@@ -17,6 +18,7 @@ export default function Profile() {
     const user = useSelector(state => state.auth.user?.user);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const allUsers = useSelector(state => state.auth.users);
+    const bookmarks = useSelector(state => state.posts.bookmarks); // Get bookmarks from state
     
     // État local pour stocker les données supplémentaires du profil
     const [userProfile, setUserProfile] = useState(null);
@@ -53,6 +55,12 @@ export default function Profile() {
         
         fetchUserProfile();
     }, [user, userId]);
+    
+    useEffect(() => {
+        if (userProfile) {
+            dispatch(fetchBookmarks(userProfile._id)); // Fetch bookmarks for the user
+        }
+    }, [userProfile, dispatch]);
     
     const handleFollow = async () => {
         try {
@@ -197,6 +205,21 @@ export default function Profile() {
                         <p>{error}</p>
                     </div>
                 )}
+
+                <div className="bookmarksContainer">
+                    <h2>Signets</h2>
+                    {bookmarks.length > 0 ? (
+                        bookmarks.map((bookmark) => (
+                            <div key={bookmark._id} className="bookmark">
+                                <p><strong>Contenu:</strong> {bookmark.content}</p>
+                                <p><strong>Auteur:</strong> {bookmark.user.username}</p>
+                                <p><strong>Date:</strong> {new Date(bookmark.createdAt).toLocaleDateString()}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p>Aucun signet enregistré.</p>
+                    )}
+                </div>
             </div>
         </Layout>
     );

@@ -54,10 +54,37 @@ const likePost = createAsyncThunk(
     }
 );
 
+const bookmarkPost = createAsyncThunk(
+    "posts/bookmarkPost",
+    async ({ id, userId }) => {
+        try {
+            const response = await myAxios.put(`/tweets/${id}/bookmark`, { userId });
+            return { id, signet: response.data.tweet.signet };
+        } catch (error) {
+            error && console.error(error);
+            throw error;
+        }
+    }
+);
+
+const fetchBookmarks = createAsyncThunk(
+    "posts/fetchBookmarks",
+    async (userId) => {
+        try {
+            const response = await myAxios.get(`/users/${userId}/bookmarks`);
+            return response.data;
+        } catch (error) {
+            error && console.error(error);
+            throw error;
+        }
+    }
+);
+
 const postsSlice = createSlice({
     name: 'posts',
     initialState: {
         posts: [],
+        bookmarks: [], // Add bookmarks state
         loading: false,
         error: null,
     },
@@ -122,11 +149,40 @@ const postsSlice = createSlice({
             .addCase(likePost.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message || "An error occurred";
+            })
+
+            // bookmarkPost
+            .addCase(bookmarkPost.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(bookmarkPost.fulfilled, (state, action) => {
+                state.loading = false;
+                const index = state.posts.findIndex(post => post.id === action.meta.arg.id);
+                if (index !== -1) {
+                    state.posts[index].signet = action.payload.signet;
+                }
+            })
+            .addCase(bookmarkPost.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || "An error occurred";
+            })
+
+            // fetchBookmarks
+            .addCase(fetchBookmarks.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchBookmarks.fulfilled, (state, action) => {
+                state.loading = false;
+                state.bookmarks = action.payload;
+            })
+            .addCase(fetchBookmarks.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || "An error occurred";
             });
-            }
+    }
 });
 
-
-
-export { createPost, fetchPosts, repost, likePost };
+export { createPost, fetchPosts, repost, likePost, bookmarkPost, fetchBookmarks };
 export default postsSlice.reducer;

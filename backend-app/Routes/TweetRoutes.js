@@ -118,6 +118,52 @@ router.put("/:id/like", async (req, res) => {
   }
 });
 
+// Ajouter un tweet aux signets
+router.post("/:id/bookmark", async (req, res) => {
+  try {
+    const tweet = await Tweet.findById(req.params.id);
+    if (!tweet) {
+      return res.status(404).json({ message: "Tweet non trouvé" });
+    }
+    if (!tweet.signet) {
+      tweet.signet = [];
+    }
+    if (tweet.signet.includes(req.body.userId)) {
+      tweet.signet = tweet.signet.filter(userId => userId.toString() !== String(req.body.userId));
+    } else {
+      tweet.signet.push(req.body.userId);
+    }
+    const updatedTweet = await tweet.save();
+    const populatedTweet = await Tweet.findById(updatedTweet._id).populate("user", "username").populate({
+      path: "retweets",
+      populate: {
+      path: "user",
+      select: "username"
+      }
+    });
+    res.json({bookmark: true, tweet: populatedTweet});
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
+// récupérer les signets d'un utilisateur
+router.get("/:id/bookmarks", async (req, res) => {
+  try {
+    const user =
+      await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+    const bookmarks = await Tweet.find({ signet: user._id }).populate("user", "username").populate({ path: "retweets", populate: { path: "user", select: "username" } });
+    res.json(bookmarks);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
+  }
+});
+
 // Créer un commentaire
 router.post("/commentaire", async (req, res) => {
   try {
