@@ -104,8 +104,7 @@ export default function Home() {
                             src="https://images.itnewsinfo.com/lmi/articles/grande/000000090076.jpg" 
                             alt="User profile"
                         />
-                        <p className="username" onClick={() => {navigate(`/profil/${user.id}`)}}>{user.username}</p>
-                        <p className="handle" onClick={() => {navigate(`/profil/${user.id}`)}}>@{user.username.toLowerCase()}</p>
+                        <p className="username" onClick={() => {navigate(`/profil/${user.id}`)}}>@{user.username}</p>
                     </div>
                     <div>
                         
@@ -129,7 +128,6 @@ export default function Home() {
                             </div>
                             <div className="originalTweetContent">
                                 <div className="tweetAuthor">
-                                    <span className="authorName">{reTweet.tweet.user?.name || "User"}</span>
                                     <span className="authorUsername">@{reTweet.tweet.user?.username || "username"}</span>
                                 </div>
                                 <p className="tweetText">{reTweet.tweet.content}</p>

@@ -7,17 +7,18 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 import CommentsModal from "./comments";
 import myAxios from "../../utils/axios";
 import { fetchPosts } from "../../redux/slices/postsSlice";
+import { useState } from "react";
 
 export default function Post ({keyD, post, retweetsFunction}) {
     const dispatch = useDispatch();
     const user = useSelector(state => state.auth.user.user)
     const users = useSelector(state => state.auth.users)
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const isUser = post.user && user.id === post.user._id
 
-    const postCreatedBy = post.user && users.find(u => u._id === post.user._id);
-    
     const handleLike = async () => {
         //dispatch(likePost({ id: post._id, userId: user.id, unlike: post.likes.includes(user.id) }));
 
@@ -31,6 +32,7 @@ export default function Post ({keyD, post, retweetsFunction}) {
 
     const handleDelete = async () => {
         const response = await myAxios.delete(`/tweets/${post._id}`);
+        console.log(response)
 
         if (response.status === 200) {
             dispatch(fetchPosts());
@@ -43,12 +45,9 @@ export default function Post ({keyD, post, retweetsFunction}) {
 
     return (
         <div key={keyD} className="post">
-            <p className="user" onClick={handleUserClick} style={{ cursor: 'pointer' }}> 
-                {
-                post.user && typeof post.user.username === 'string' ?
-                postCreatedBy.username :
-                'Unknown User'
-                }</p>
+            <p className="user" onClick={handleUserClick} style={{ cursor: 'pointer' }}>
+                 @{post.user.username}
+                </p>
             <div className="content">
                 <p>{post.content}</p>
             </div>
@@ -65,13 +64,13 @@ export default function Post ({keyD, post, retweetsFunction}) {
                     <FontAwesomeIcon icon={faArrowsSpin} /> 
                     {post.retweets ? post.retweets.length : 0}
                 </p>
-                <CommentsModal />
+                <CommentsModal comments={post.commentaire} postId={post._id} setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}/>
                 <p><FontAwesomeIcon icon={faBookmark} /> {post.signet}</p>
             </div>
             {
                 post.retweets ? 
                         <div key={keyD} className="post">
-                            {post.retweets.user && <p className="user"> {post.retweets.user.username}</p>}
+                            {post.retweets.user && <p className="user">  @{post.retweets.user.username}</p>}
                             {post.retweets.content && <div className="content">
                                 <p>{post.retweets.content}</p>
                             </div>}
