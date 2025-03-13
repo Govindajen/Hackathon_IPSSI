@@ -14,6 +14,7 @@ const tweetsRouter = require("./Routes/TweetRoutes");
 const usersRouter = require("./Routes/UserRoutes");
 const notifsRouter = require("./Routes/NotifRoutes");
 const searchRouter = require('./Routes/search');
+const emotionsRouter = require('./Routes/emotions');
 const uploadRouter = require("./Routes/upload"); // Import de la route d'upload
 
 mongoose.connect(process.env.MONGODB_URI, {});
@@ -27,6 +28,7 @@ app.use("/tweets", tweetsRouter);
 app.use("/users", usersRouter);
 app.use("/notifs", notifsRouter);
 app.use('/search', searchRouter);
+app.use('/emotions', emotionsRouter);
 app.use("/upload", uploadRouter); // Utilisation de la route d'upload
 
 // Servir le dossier "uploads" en tant que statique
