@@ -47,13 +47,14 @@ export default function Post({ keyD, post, retweetsFunction }) {
             console.error("Erreur lors de la suppression :", error);
         }
 
+    };
+
     const handleBookmark = async () => {
         const response = await myAxios.post(`/tweets/${post._id}/bookmark`, { userId: user.id });
 
         if (response.status === 200) {
             dispatch(fetchPosts());
         }
-    }
     };
 
     const handleUserClick = () => {
