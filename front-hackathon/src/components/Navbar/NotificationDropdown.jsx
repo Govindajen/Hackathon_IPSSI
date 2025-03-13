@@ -23,25 +23,10 @@ export default function NotifDropdown () {
         </DropdownToggle>
 
         <DropdownMenu className="dropdown-menu dropdown-menu-lg p-0 dropdown-menu-end">
-                <DropdownItem>
-                    Some Action
-                </DropdownItem>
                 <DropdownItem text>
                     Dropdown Item Text
                 </DropdownItem>
-                <DropdownItem disabled>
-                    Action (disabled)
-                </DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem>
-                    Foo Action
-                </DropdownItem>
-                <DropdownItem>
-                    Bar Action
-                </DropdownItem>
-                <DropdownItem>
-                    Quo Action
-                </DropdownItem>
         </DropdownMenu>
     </Dropdown>
     )
