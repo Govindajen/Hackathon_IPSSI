@@ -105,112 +105,61 @@ export default function Home() {
         ),
     };
 
-
     dispatch(repost(tweet));
     setReTweet({ content: "", tweet: {} });
-    return (
-        <Layout>
-            <div className="homeContainer">
-                <div className="sidebar">
-                    <div className="profileContainer">
-                        <img 
-                            className="contentImage" 
-                            src="https://images.itnewsinfo.com/lmi/articles/grande/000000090076.jpg" 
-                            alt="User profile"
-                        />
-                        <p className="username" onClick={() => {navigate(`/profil/${user.id}`)}}>@{user.username}</p>
-                    </div>
-                    <div>
-                        
-                    </div>
-                    <button 
-                        onClick={() => dispatch(logout())} 
-                        className="logout"
-                    >
-                        Logout <FontAwesomeIcon icon={faArrowRightFromBracket} />
-                    </button>
+  };
+
+  return (
+    <Layout>
+      <div className="homeContainer">
+        <div className="sidebar">
+          <div className="profileContainer">
+            <img
+              className="contentImage"
+              src="https://images.itnewsinfo.com/lmi/articles/grande/000000090076.jpg"
+              alt="User profile"
+            />
+            <p className="username" onClick={() => {navigate(`/profil/${user.id}`);}}>
+              @{user.username}
+            </p>
+          </div>
+          <div></div>
+          <button
+            onClick={() => dispatch(logout())}
+            className="logout"
+          >
+            Logout <FontAwesomeIcon icon={faArrowRightFromBracket} />
+          </button>
+        </div>
+
+        <div className="splitContainer left">
+          {(reTweet && reTweet.tweet._id) ? (
+            <div className="retweetContainer">
+              {/* Original tweet information display */}
+              <div className="originalTweetInfo">
+                <div className="retweetHeader">
+                  <span className="retweetIcon">🔁</span>
+                  <span className="retweetLabel">Reposter</span>
                 </div>
-
-                <div className="splitContainer left">
-                {(reTweet && reTweet.tweet._id) ? (
-                    <div className="retweetContainer">
-                        {/* Original tweet information display */}
-                        <div className="originalTweetInfo">
-                            <div className="retweetHeader">
-                                <span className="retweetIcon">🔁</span>
-                                <span className="retweetLabel">Reposter</span>
-                            </div>
-                            <div className="originalTweetContent">
-                                <div className="tweetAuthor">
-                                    <span className="authorUsername">@{reTweet.tweet.user?.username || "username"}</span>
-                                </div>
-                                <p className="tweetText">{reTweet.tweet.content}</p>
-                                {reTweet.tweet.media && (
-                                    <img 
-                                        src={reTweet.tweet.media} 
-                                        alt="Tweet media" 
-                                        className="tweetMedia" 
-                                    />
-                                )}
-                                <div className="tweetMeta">
-                                    <span className="tweetDate">{new Date(reTweet.tweet.date).toLocaleString()}</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        {/* Retweet comment input */}
-                        <div className="newPostContainer">
-                            <textarea
-                                value={reTweet.content}
-                                onChange={(e) => setReTweet({...reTweet, content: e.target.value.slice(0, 256)})}
-                                placeholder="Add a comment..."
-                                className="postInput retweetComment"
-                                maxLength="256"
-                                aria-label="Add a comment to your retweet"
-                            />
-                            <span className="retweetButtons">
-                                <button 
-                                    onClick={() => setReTweet({ content: "", tweet: {} })} 
-                                    className="postButton"
-                                >
-                                    Annuller
-                                </button>
-                                <button 
-                                    onClick={handleRepostSubmit} 
-                                    className="postButton"
-                                >
-                                    Reposter
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="newPostContainer">
-                        <textarea
-                            value={postContent.content}
-                            onChange={(e) => handlePostChange(e.target.value.slice(0, 256))}
-                            placeholder="What's happening?"
-                            className="postInput"
-                            maxLength="256"
-                            aria-label="Write a new post"
-                        />
-                        <button 
-                            onClick={handlePostSubmit} 
-                            className="postButton"
-                        >
-                            Post
-                        </button>
-                    </div>
-                )}
-
-                    <hr />
-
-                    <div className="postsContainer">
-                        {postsJsx?.length ? postsJsx : <p className="noPosts">No posts yet.</p>}
-                    </div>
-
+                <div className="originalTweetContent">
+                  <div className="tweetAuthor">
+                    <span className="authorUsername">@{reTweet.tweet.user?.username || "username"}</span>
+                  </div>
+                  <p className="tweetText">{reTweet.tweet.content}</p>
+                  {reTweet.tweet.media && (
+                    <img
+                      src={reTweet.tweet.media}
+                      alt="Tweet media"
+                      className="tweetMedia"
+                    />
+                  )}
+                  <div className="tweetMeta">
+                    <span className="tweetDate">{new Date(reTweet.tweet.date).toLocaleString()}</span>
+                  </div>
                 </div>
               </div>
+              
+              {/* Retweet comment input */}
               <div className="newPostContainer">
                 <textarea
                   value={reTweet.content}
