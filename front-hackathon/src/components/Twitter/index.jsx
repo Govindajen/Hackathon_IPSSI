@@ -63,9 +63,10 @@ export default function Post({ keyD, post, retweetsFunction, detectEmotion }) {
         }
     };
 
-    const handleDetectEmotion = (tweet) => {
-        detectEmotion();
-        console.log(tweet)
+    const handleDetectEmotion = async (postId) => {
+        const emotion = await detectEmotion();
+        const response = await myAxios.put(`/emotions/${user.id}`, { post: postId, emotion: emotion });
+        console.log(response)
     }
 
     return (

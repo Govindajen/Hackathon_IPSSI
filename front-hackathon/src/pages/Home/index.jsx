@@ -73,8 +73,8 @@ export default function Home() {
       const res = await myAxios.post(`http://localhost:5000/api/detect-emotion`, { image: imageBase64 });
       // On récupère l'émotion du premier visage détecté (s'il y en a)
       if (res.data.results && res.data.results.length > 0) {
-        console.log(res.data.results[0].emotions || {})
-        return res.data.results[0].emotions || {};
+        const emotions = res.data.results[0].emotions || {}
+        return Object.keys(emotions).reduce(function(a, b){ return emotions[a] > emotions[b] ? a : b });
       }
       return {};
     } catch (err) {

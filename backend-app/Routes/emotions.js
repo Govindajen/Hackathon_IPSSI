@@ -3,7 +3,7 @@ const router = express.Router();
 const Tweet = require("../Models/Tweet");
 const User = require("../Models/User");
 
-router.put("/:postId/:userId", async (req, res) => {
+router.put("/:userId", async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate(req.params.userId, {
             $push: { emotions: req.body }
