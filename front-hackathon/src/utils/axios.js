@@ -3,7 +3,6 @@ import axios from 'axios';
 // Create an instance of axios
 const myAxios = axios.create({
     baseURL: 'http://localhost:3000', // Replace with your API base URL
-    timeout: 1000,
 });
 
 // Request interceptor

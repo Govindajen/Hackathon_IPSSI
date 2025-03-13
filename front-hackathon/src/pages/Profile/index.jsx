@@ -9,6 +9,9 @@ import FollowModal from "./followModal";
 import { logout } from "../../redux/slices/authSlice";
 import { fetchBookmarks } from "../../redux/slices/postsSlice"; // Import fetchBookmarks
 import "./profile.scss";
+import ProfileTabs from "./profileTabs";
+
+import Post from "../../components/Twitter";
 
 export default function Profile() {
     const dispatch = useDispatch();
@@ -18,7 +21,19 @@ export default function Profile() {
     const user = useSelector(state => state.auth.user?.user);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const allUsers = useSelector(state => state.auth.users);
-    const bookmarks = useSelector(state => state.posts.bookmarks); // Get bookmarks from state
+    const bookmarks = useSelector(state => state.posts.bookmarks);
+    const posts = useSelector(state => state.posts.posts);
+
+    const userPosts = posts.filter(post => post.user._id === user.id);
+
+    const postsJsx = userPosts.reverse().map((post) => {
+        return <Post key={post._id} post={post} profile={true} />
+    });
+
+    const bookmarksJsx = bookmarks.map((bookmark) => {
+        return <Post key={bookmark._id} post={bookmark} profile={true} />
+    });
+  
     
     // État local pour stocker les données supplémentaires du profil
     const [userProfile, setUserProfile] = useState(null);
@@ -118,109 +133,89 @@ export default function Profile() {
     }
 
     
-    
-    return (
-        <Layout>
-            <div className="profilePageContainer">
-                <div className="profileHeader">
-                    <h1>Mon Profil</h1>
-                </div>
-                
-                <div className="profileContent">
-                    <div className="profileCard">
-                        <div className="profileAvatar">
-                            <img 
-                                src="https://images.itnewsinfo.com/lmi/articles/grande/000000090076.jpg" 
-                                alt="Avatar de profil" 
-                                className="avatarImage"
-                            />
-                        </div>
-                        
-                        <div className="profileInfo">
-                            {userProfile ? 
-                                <>
-                                <div className="bioContainer">
-                                    <div className="bioDetails">
-                                        <span className="nameContainer">
-                                            <h2 className="profileName">{userProfile?.username}</h2>
-                                            <p className="profileHandle">@{userProfile?.username.toLowerCase()}</p>
-                                        </span>
-                                        <p className="profileHandle">{userProfile?.bio}</p>
-                                    </div>
-                                    <span className="followContainer">
-                                    <FollowModal
-                                        followers={followersDetails}
-                                        following={followingDetails}
-                                        isOpen={isModalOpen}
-                                        func={handleModal}
-                                    />
-
-                                    <div className="profileActions">
-                                        {userProfile && userProfile._id !== user.id && (
-                                            <button 
-                                                onClick={handleFollow} 
-                                                className="followButton"
-                                            >
-                                                {isFollowing ? "Unfollow" : "Follow"}
-                                            </button>
-                                        )}
-                                    </div>
-                                    
-                                    <p className="followP" onClick={() => {handleModal()}}>Followers <span> {followersDetails.length} </span></p>
-                                    <p className="followP" onClick={() => {handleModal()}}>Following <span> {followingDetails.length} </span></p>
-                                    </span>
-                                </div>
-                                </> : null
-                            }
-                            
-                            <div className="profileDetails">
-                                <div className="detailItem">
-                                    <FontAwesomeIcon icon={faUser} className="detailIcon" />
-                                    <span>Nom d'utilisateur: {userProfile?.username}</span>
-                                </div>
-                                
-                                <div className="detailItem">
-                                    <FontAwesomeIcon icon={faEnvelope} className="detailIcon" />
-                                    <span>Email: {userProfile?.email}</span>
-                                </div>
-                                
-                                <div className="detailItem">
-                                    <FontAwesomeIcon icon={faCalendarAlt} className="detailIcon" />
-                                    <span>Date d'inscription: {userProfile ? new Date(userProfile.createdAt).toLocaleDateString() : "Chargement..."}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                
-                </div>
-                
-                {loading && (
-                    <div className="loadingIndicator">
-                        <p>Chargement des informations...</p>
-                    </div>
-                )}
-                
-                {error && (
-                    <div className="errorMessage">
-                        <p>{error}</p>
-                    </div>
-                )}
-
-                <div className="bookmarksContainer">
-                    <h2>Signets</h2>
-                    {bookmarks.length > 0 ? (
-                        bookmarks.map((bookmark) => (
-                            <div key={bookmark._id} className="bookmark">
-                                <p><strong>Contenu:</strong> {bookmark.content}</p>
-                                <p><strong>Auteur:</strong> {bookmark.user.username}</p>
-                                <p><strong>Date:</strong> {new Date(bookmark.createdAt).toLocaleDateString()}</p>
-                            </div>
-                        ))
-                    ) : (
-                        <p>Aucun signet enregistré.</p>
-                    )}
-                </div>
+return (
+    <Layout>
+        <div className="profilePageContainer">
+            <div className="profileHeader">
+                <h1>Mon Profil</h1>
             </div>
-        </Layout>
-    );
-}
+            
+            <div className="profileContent">
+                <div className="profileCard">
+                    <div className="profileAvatar">
+                        <img 
+                            src="https://images.itnewsinfo.com/lmi/articles/grande/000000090076.jpg" 
+                            alt="Avatar de profil" 
+                            className="avatarImage"
+                        />
+                    </div>
+                    
+                    <div className="profileInfo">
+                        {userProfile ? 
+                            <>
+                            <div className="bioContainer">
+                                <div className="bioDetails">
+                                    <span className="nameContainer">
+                                        <h2 className="profileName">{userProfile?.username}</h2>
+                                        <p className="profileHandle">@{userProfile?.username.toLowerCase()}</p>
+                                    </span>
+                                    <p className="profileHandle">{userProfile?.bio}</p>
+                                </div>
+                                <span className="followContainer">
+                                <FollowModal
+                                    followers={followersDetails}
+                                    following={followingDetails}
+                                    isOpen={isModalOpen}
+                                    func={handleModal}
+                                />
+
+                                <div className="profileActions">
+                                    {userProfile && userProfile._id !== user.id && (
+                                        <button 
+                                            onClick={handleFollow} 
+                                            className="followButton"
+                                        >
+                                            {isFollowing ? "Unfollow" : "Follow"}
+                                        </button>
+                                    )}
+                                </div>
+                                
+                                <p className="followP" onClick={() => {handleModal()}}>Followers <span> {followersDetails.length} </span></p>
+                                <p className="followP" onClick={() => {handleModal()}}>Following <span> {followingDetails.length} </span></p>
+                                </span>
+                            </div>
+                            </> : null
+                        }
+                        
+                        <div className="profileDetails">
+                            <div className="detailItem">
+                                <FontAwesomeIcon icon={faEnvelope} className="detailIcon" />
+                                <span>Email: {userProfile?.email}</span>
+                            </div>
+                            
+                            <div className="detailItem">
+                                <FontAwesomeIcon icon={faCalendarAlt} className="detailIcon" />
+                                <span>Date d'inscription: {userProfile ? new Date(userProfile.createdAt).toLocaleDateString() : "Chargement..."}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+            
+            {loading && (
+                <div className="loadingIndicator">
+                    <p>Chargement des informations...</p>
+                </div>
+            )}
+            
+            {error && (
+                <div className="errorMessage">
+                    <p>{error}</p>
+                </div>
+            )}
+            <ProfileTabs userPosts={postsJsx} bookmarks={bookmarksJsx} />
+        </div>
+    </Layout>
+)
+};
