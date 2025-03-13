@@ -8,4 +8,4 @@ const NotifSchema = new mongoose.Schema({
     date: { type: Date, default: Date.now },
 }, { timestamps: true });
 
-module.exports = mongoose.model("Notif", NotifSchema);
+module.exports = mongoose.model("notifications", NotifSchema);
