@@ -28,26 +28,7 @@ function FollowModal({ followers = [], following = [], isOpen, func }) {
                 </ModalHeader>
 
                 <ModalBody className="follow-modal-body">
-                    <Nav tabs className="follow-tabs">
-                        <NavItem>
-                            <NavLink
-                                className={activeTab === "followers" ? "active" : ""}
-                                onClick={() => switchTab("followers")}
-                            >
-                                Followers ({followers.length})
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink
-                                className={activeTab === "following" ? "active" : ""}
-                                onClick={() => switchTab("following")}
-                            >
-                                Following ({following.length})
-                            </NavLink>
-                        </NavItem>
-                    </Nav>
-
-                    <div className="follow-list-container">
+                    <div className="x-like-style">
                         {activeTab === "followers" ? renderList(followers) : renderList(following)}
                     </div>
                 </ModalBody>

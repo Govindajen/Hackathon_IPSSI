@@ -153,4 +153,18 @@ router.get("/:id/bookmarks", async (req, res) => {
   }
 });
 
+// Nouvelle route: mise à jour du profil
+router.put("/:id", async (req, res) => {
+    try {
+        const updates = (({ username, email, bio }) => ({ username, email, bio }))(req.body);
+        const user = await User.findByIdAndUpdate(req.params.id, updates, { new: true });
+        if (!user) {
+            return res.status(404).json({ message: "Utilisateur non trouvé" });
+        }
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: "Erreur serveur", error});
+    }
+});
+
 module.exports = router;

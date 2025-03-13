@@ -159,7 +159,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="homeContainer">
+      <div className="homeContainer x-like-style">
         <div className="sidebar">
           <div className="profileContainer">
             <img
@@ -265,7 +265,7 @@ export default function Home() {
 
           <hr />
 
-          <div className="postsContainer">
+          <div className="postsContainer x-like-style">
             {postsJsx?.length ? postsJsx : <p className="noPosts">No posts yet.</p>}
           </div>
         </div>
