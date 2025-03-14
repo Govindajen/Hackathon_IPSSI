@@ -25,8 +25,12 @@ export default function Profile() {
     const posts = useSelector(state => state.posts.posts);
 
     const userPosts = posts.filter(post => post.user._id === user.id);
+    const otherUserPost = posts.filter(post => post.user._id === userId);
 
     const postsJsx = userPosts.reverse().map((post) => {
+        return <Post key={post._id} post={post} profile={true} />
+    });
+    const otherUserPostsJsx = otherUserPost.reverse().map((post) => {
         return <Post key={post._id} post={post} profile={true} />
     });
 
@@ -223,7 +227,12 @@ return (
                     <p>{error}</p>
                 </div>
             )}
-            <ProfileTabs userPosts={postsJsx} bookmarks={bookmarksJsx} />
+             {(userId == user.id) ?
+                <ProfileTabs userPosts={postsJsx} bookmarks={bookmarksJsx} />
+                :
+                otherUserPostsJsx
+
+             }
         </div>
     </Layout>
 )

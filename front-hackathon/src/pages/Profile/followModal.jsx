@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Nav, NavItem, NavLink } from "reactstrap";
+import './profile.scss';
 
 function FollowModal({ followers = [], following = [], isOpen, func }) {
     const [activeTab, setActiveTab] = useState("followers");
@@ -47,7 +48,7 @@ function FollowModal({ followers = [], following = [], isOpen, func }) {
                          </NavItem>
                      </Nav>
  
-                     <div className="x-like-style">
+                     <div className="follow-list-container">
                          {activeTab === "followers" ? renderList(followers) : renderList(following)}
                      </div>
                  </ModalBody>

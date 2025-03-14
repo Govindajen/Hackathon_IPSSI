@@ -27,7 +27,50 @@ export default function Home() {
 
 
   const [postTemp, setPostTemp] = useState(posts);
-  useEffect(() => {/*  */
+  useEffect(() => {
+    let emotions = user.emotions
+    emotions = emotions.filter((emotion) => emotion.post.hashtags.length > 0)
+    let groupEmotions = [];
+    const emotionKeys = ["angry", "disgust", "fear", "happy", "neutral", "sad", "suprise"];
+    emotions.forEach(emotion => {
+        emotion.post.hashtags.forEach((hashtag) => {
+            const refHashtags = groupEmotions.map(groupEmotion => groupEmotion.hashtag)
+            let groupHashtag = undefined
+            if (!refHashtags.includes(hashtag)) {
+                groupHashtag = { hashtag, angry: 0, disgust: 0, fear: 0, happy: 0, neutral: 0, sad: 0, suprise: 0 }
+            } else {
+                groupHashtag = groupEmotions.filter(groupEmotion => groupEmotion.hashtag === hashtag)[0]
+            }
+            if (emotionKeys.includes(emotion.emotion)) {
+                groupHashtag[emotion.emotion] += 1;
+            }
+            groupEmotions = groupEmotions.filter(groupEmotion => groupEmotion.hashtag !== hashtag)
+            groupEmotions.push(groupHashtag)
+        })
+    });
+    posts.forEach(post => {
+        groupEmotions.forEach(groupEmotion => {
+            if (post.hashtags.includes(groupEmotion.hashtag)) {
+                const emotion = Object.keys(groupEmotion)
+  // On enlève la clé "hashtag"
+  .filter(key => key !== 'hashtag')
+  .reduce((maxKey, currentKey) => {
+    return groupEmotion[currentKey] > groupEmotion[maxKey] ? currentKey : maxKey;
+  });
+                let postsRef = posts.filter(postRef => {
+                    post.id !== postRef.id
+                })
+                console.log("emotion:", emotion)
+                console.log(groupEmotion)
+                if (emotion === "happy") {
+                    postsRef.unshift(post)
+                } else if (emotion !== "neutral") {
+                    postsRef.push(post)
+                }
+                setPostTemp(postsRef)
+            }
+        })
+    })
     setPostTemp(posts);
   }, [posts]);
 
@@ -58,12 +101,6 @@ export default function Home() {
     dispatch(fetchPosts());
     dispatch(fetchUsers());
     startCamera();
-    // Lancer la détection en continu toutes les 1 seconde pour afficher l'émotion en direct
-    // const interval = setInterval(async () => {
-    //   const emo = await detectEmotion();
-    //   setCurrentEmotion(emo);
-    // }, 1000);
-    // return () => clearInterval(interval);
   }, [dispatch]);
 
   const detectEmotion = async () => {
