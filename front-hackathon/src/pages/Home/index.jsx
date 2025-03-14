@@ -29,10 +29,10 @@ export default function Home() {
   const [postTemp, setPostTemp] = useState(posts);
   useEffect(() => {
     let emotions = user.emotions
-    emotions = emotions.filter((emotion) => emotion.post.hashtags.length > 0)
+    emotions = emotions?.filter((emotion) => emotion.post.hashtags.length > 0)
     let groupEmotions = [];
     const emotionKeys = ["angry", "disgust", "fear", "happy", "neutral", "sad", "suprise"];
-    emotions.forEach(emotion => {
+    emotions?.forEach(emotion => {
         emotion.post.hashtags.forEach((hashtag) => {
             const refHashtags = groupEmotions.map(groupEmotion => groupEmotion.hashtag)
             let groupHashtag = undefined
